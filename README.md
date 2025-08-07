@@ -19,13 +19,6 @@ By cloning, downloading, or using this code, you agree that:
 - Explore process management and system-level interactions in Python
 - Study client-server architecture and asynchronous communication
 
-## 🛠 Technologies Used
-
-- Python 3.10+
-- `psutil`
-- `aiogram` (for bot integration)
-- Asynchronous programming (async/await)
-
 ## 🔒 Responsibility
 
 You are solely responsible for how you use this code.  
