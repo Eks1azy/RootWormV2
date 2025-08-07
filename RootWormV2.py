@@ -162,7 +162,6 @@ def RootWorm3():
         f"--output-dir=Your(EXE) "
         f"--output-filename={exe}.exe "
         f"--include-data-file=config.py=config.py "
-        f"--include-data-file=library.py=library.py "
         f"--nofollow-import-to=tkinter "
         f"--assume-yes-for-downloads "
         f"--remove-output "
