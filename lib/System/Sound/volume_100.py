@@ -22,7 +22,6 @@ from ctypes import POINTER, cast
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from config import ALLOWED_USER_ID
-from library import *
 
 def register_volume_100(dp):
     @dp.message(F.text.lower() == "звук на 100%")

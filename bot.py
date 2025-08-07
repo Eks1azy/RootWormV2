@@ -15,14 +15,25 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+
 from config import API_TOKEN, ALLOWED_USER_ID, MAX_ATTEMPTS, MAX_MESSAGE_LENGTH, destination_folder, directory, file_ids
 
+import os
+import logging
+import sys
+import asyncio
+import shutil
+from pathlib import Path
+import subprocess
+import winreg
+from aiogram import types
+from aiogram.filters import Command
+
 ## Отключение вывода на экран
-sys.stdout = open(os.devnull, 'w')  
-sys.stderr = open(os.devnull, 'w')  
-logging.basicConfig(level=logging.CRITICAL + 1)
-logging.getLogger('aiogram').disabled = True
+# sys.stdout = open(os.devnull, 'w')  
+# sys.stderr = open(os.devnull, 'w')  
+# logging.basicConfig(level=logging.CRITICAL + 1)
+# logging.getLogger('aiogram').disabled = True
 
 # ## Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)

@@ -15,9 +15,12 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
 from config import ALLOWED_USER_ID
 from lib.states import current_directory
+
+import os
 
 def register_directory_value(dp):
     @dp.message(F.text == "Содержание директории")

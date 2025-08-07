@@ -15,13 +15,13 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-import os
 from aiogram import types, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from lib.states import Openfile
 from config import ALLOWED_USER_ID, MAX_MESSAGE_LENGTH, MAX_ATTEMPTS
 
+import os
 
 def register_open_file_handlers(dp):
     @dp.message(F.text.lower() == "открыть файл")

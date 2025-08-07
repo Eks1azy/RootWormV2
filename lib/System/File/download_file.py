@@ -15,9 +15,14 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
+from aiogram.types import FSInputFile
 from config import ALLOWED_USER_ID
 from lib.states import waitingfile
+
+import os
 
 def register_download_file(dp):
     @dp.message(F.text.lower() == "скачать файл")

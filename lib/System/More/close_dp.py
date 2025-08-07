@@ -15,8 +15,12 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
+
+import psutil
 
 def register_close_dp(dp):
     @dp.message(F.text.lower() == "закрыть диспетчер задач")

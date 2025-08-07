@@ -15,10 +15,13 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import CMDBOOM
 
+import subprocess
 
 def register_cmd_bomb(dp):
     @dp.message(F.text.lower() == "cmd бомба")

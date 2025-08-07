@@ -15,13 +15,14 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from lib.System.Procceses.fullprocesses import ProcessState
+from lib.states import ProcessState
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
 from aiogram import types, F
 import psutil
 from lib.states import Form
 from config import ALLOWED_USER_ID
+
 
 def register_terminate_process_handlers(dp):
     @dp.message(F.text.lower() == "завершить процесс")

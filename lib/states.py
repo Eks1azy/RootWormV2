@@ -15,7 +15,14 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram.fsm.state import StatesGroup, State
+import logging
+
+class clipboard(StatesGroup):
+    waiting_for_newClipboard = State()
+
+class ProcessState(StatesGroup):
+    waiting_for_pid = State()
 
 class Form(StatesGroup):
     folder_name = State()

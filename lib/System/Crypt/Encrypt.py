@@ -15,10 +15,20 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
+from aiogram.fsm.context import FSMContext
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.backends import default_backend
 from config import ALLOWED_USER_ID
 from lib.states import Encrypt
 from lib.states import logger
+
+import os
+
+
 def register_encrypt_handlers(dp):
     dp.message(F.text.lower() == "зашифровать файл")
     @dp.message(Command("encrypt_file"))

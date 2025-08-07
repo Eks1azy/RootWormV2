@@ -15,8 +15,13 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
+from lib.states import clipboard
+
+import pyperclip
 
 def register_check_copied(dp):
     @dp.message(F.text.lower() == "посмотреть буфер обмена")
@@ -30,8 +35,6 @@ def register_check_copied(dp):
         else:
             await message.answer("К сожалению, у вас нет доступа к этому боту.")
 
-    class clipboard(StatesGroup):
-        waiting_for_newClipboard = State()
     @dp.message(F.text.lower() == "изменить буфер обмена")
     async def new_Clipboard(message: types.Message, state: FSMContext):
         if message.from_user.id == ALLOWED_USER_ID:

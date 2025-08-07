@@ -15,8 +15,15 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
+
+import subprocess
+import psutil
+import socket
+import requests
 
 def register_wifi_data(dp):
     @dp.message(lambda message: message.text and message.text.lower() == "диагностика сети")

@@ -15,21 +15,20 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
+from aiogram import Bot, Dispatcher
+import os 
+
 
 ############################################################
-API_TOKEN = ' '  # TG API BOT TOKEN
-ALLOWED_USER_ID =    # TG USER ID 
+API_TOKEN = '8237470674:AAGBEo7sfgiQFhxy88uAIUjor9YEHsOj8AI'  # TG API BOT TOKEN
+ALLOWED_USER_ID = 950461095   # TG USER ID 
 ############################################################
-
-
 
 MAX_MESSAGE_LENGTH = 4000  # telegram limit – 4096 characters
 MAX_ATTEMPTS = 1
 
 destination_folder = r'C:\ProgramData\MediaTask'
 directory = "C:/Users/Public/main"
-
-from library import *
 
 os.makedirs(destination_folder, exist_ok=True)
 os.makedirs(directory, exist_ok=True)

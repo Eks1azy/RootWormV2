@@ -15,9 +15,14 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-from library import *
+# from library import *
+from aiogram import types, F
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import waitmas
+
+import os 
 
 def register_delete_file(dp):
     @dp.message(F.text.lower() == "удалить файл")

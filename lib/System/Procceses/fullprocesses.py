@@ -17,7 +17,6 @@
 
 from aiogram import types, F
 from aiogram.filters import Command
-from aiogram.fsm.state import StatesGroup, State
 import psutil
 
 from config import ALLOWED_USER_ID, MAX_MESSAGE_LENGTH
@@ -44,6 +43,3 @@ def register_full_processes_handlers(dp):
                 await message.answer(all_processes_info[i:i + MAX_MESSAGE_LENGTH])
         else:
             await message.answer("К сожалению, у вас нет доступа к этому боту.")
-
-class ProcessState(StatesGroup):
-    waiting_for_pid = State()
