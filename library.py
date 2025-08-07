@@ -44,8 +44,13 @@ from pynput.keyboard import Key
 from pynput import keyboard 
 import psutil 
 import tempfile
-import ctypes 
+import ctypes
+
 import wmi
+import wmi
+import wmi
+import wmi
+
 import asyncio 
 import os 
 import pyautogui
