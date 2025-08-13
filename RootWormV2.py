@@ -1,10 +1,10 @@
 ##  _________________________________________
-##   |_______  authors: NoNamedExe  _______| 
+##   |_______  authors: Eks1azy  _______| 
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
 ##           \_\_\_\_\_\_\_\_\_\_\_\                    
 ##  ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/NoNamedExe   / /
+##  |  github:https://github.com/Eks1azy   / /
 ##  |                                        / / 
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
@@ -127,8 +127,8 @@ def RootWorm3():
         "                                                                                ",
        f"{let}________________________________________________________{clear}            ", 
        f"[{let}*{clear}] RootWorm{ler}V2{clear} RAT                                      ", 
-       f"[{let}*{clear}] Authors        {let}|{clear} NoNamedExe, Oqwe4O            ", 
-       f"[{let}*{clear}] Github         {let}|{clear} https://github.com/NoNamedExe      ",      
+       f"[{let}*{clear}] Authors        {let}|{clear} Eks1azy, Oqwe4O            ", 
+       f"[{let}*{clear}] Github         {let}|{clear} https://github.com/Eks1azy      ",      
        f"              {let}______________________________________/{clear}               "    
     ]
 

@@ -1,10 +1,10 @@
 ##  _________________________________________
-##   |_______  authors: NoNamedExe  _______| 
+##   |_______  authors: Eks1azy  _______| 
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
 ##           \_\_\_\_\_\_\_\_\_\_\_\                    
 ##  ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/NoNamedExe   / /
+##  |  github:https://github.com/Eks1azy   / /
 ##  |                                        / / 
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
@@ -30,10 +30,10 @@ from aiogram import types
 from aiogram.filters import Command
 
 ## Отключение вывода на экран
-# sys.stdout = open(os.devnull, 'w')  
-# sys.stderr = open(os.devnull, 'w')  
-# logging.basicConfig(level=logging.CRITICAL + 1)
-# logging.getLogger('aiogram').disabled = True
+sys.stdout = open(os.devnull, 'w')  
+sys.stderr = open(os.devnull, 'w')  
+logging.basicConfig(level=logging.CRITICAL + 1)
+logging.getLogger('aiogram').disabled = True
 
 # ## Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
