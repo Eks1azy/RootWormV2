@@ -4,8 +4,8 @@ import python_minifier
 # Путь к исходному проекту и куда копировать минифицированную версию
 
 #########################################################
-source_dir = r"D:\Vs_code\Rat\RootWormV2"
-output_dir = r"D:\Vs_code\Rat\minify_RAT"
+source_dir = r"-"
+output_dir = r"-"
 #########################################################
 
 def minify_file(source_path, target_path):
