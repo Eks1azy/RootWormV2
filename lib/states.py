@@ -18,6 +18,9 @@
 from aiogram.fsm.state import StatesGroup, State
 import logging
 
+class CommandShell(StatesGroup):
+    waiting_command = State()
+
 class clipboard(StatesGroup):
     waiting_for_newClipboard = State()
 

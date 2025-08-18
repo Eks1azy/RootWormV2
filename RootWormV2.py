@@ -155,11 +155,12 @@ def RootWorm3():
 
         # command = (
         # f"python -m nuitka "
-        # f"--standalone "                    
-        # f"--windows-console-mode=disable " 
+        # f"--standalone "
+        # f"--onefile "
+        # f"--windows-console-mode=disable "
         # f"--windows-icon-from-ico={paths} "
-        # f"--output-dir=Your(EXE) "         
-        # f"--output-filename={exe}.exe "     
+        # f"--output-dir=Your(EXE) "
+        # f"--output-filename={exe}.exe "
         # f"--include-data-file=config.py=config.py "
         # f"--nofollow-import-to=tkinter "
         # f"--assume-yes-for-downloads "
@@ -167,22 +168,15 @@ def RootWorm3():
         # f"bot.py"
         # )
 
+        # PyInstaller-команда
         command = (
-        f"python -m nuitka "
-        f"--standalone "
-        f"--onefile "
-        f"--windows-console-mode=disable "
-        f"--windows-icon-from-ico={paths} "
-        f"--output-dir=Your(EXE) "
-        f"--output-filename={exe}.exe "
-        f"--include-data-file=config.py=config.py "
-        f"--nofollow-import-to=tkinter "
-        f"--assume-yes-for-downloads "
-        f"--remove-output "
-        f"bot.py"
+            f"pyinstaller --onefile --noconsole "
+            f"--icon={paths} "
+            f"--name={exe} "
+            f"--add-data config.py;. "
+            f"--distpath Your(EXE) "
+            f"bot.py"
         )
-
-
 
         os.system(command)
 
