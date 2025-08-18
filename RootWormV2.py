@@ -216,8 +216,8 @@ def RootWorm3():
 
     print(f"""
     {ler}>>{clear} Choose the compiler:
-    {ler}1.{clear} PyInstaller ( less time & more compatibility & visible for antivirus )
-    {ler}2.{clear} Nuitka  ( more time & less compatibility & less visible for antivirus )
+    {ler}1.{clear} PyInstaller ( Faster, compatible, antivirus-friendly )
+    {ler}2.{clear} Nuitka  ( Slower, less compatible, stealthy )
     """)   
     
     choice = input(f"{let}root@RootWormV2{clear}:{ler}~{clear}$ ")

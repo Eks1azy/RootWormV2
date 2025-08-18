@@ -16,3 +16,4 @@ pyaudio==0.2.14
 aiohttp==3.9.5
 requests==2.31.0
 GPUtil==1.4.0
+pyarmor==9.1.8
