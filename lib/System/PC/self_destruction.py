@@ -22,6 +22,9 @@ from config import ALLOWED_USER_ID
 import sys, subprocess, time
 import os, winreg
 from lib.states import self_destruction
+import random
+
+password = ''.join(random.choice('0123456789') for _ in range(8))
 
 def register_self_destruction(dp):
     @dp.message(F.text.lower() == "самоуничтожение")
@@ -29,7 +32,7 @@ def register_self_destruction(dp):
     async def start_move_file(message: types.Message, state: FSMContext):
         if message.from_user.id == ALLOWED_USER_ID:
             await message.answer(
-                "Вы уверены что хотите это сделать? \nДля подтверждения отправтее эту комбинацию:'14035218'")
+                f"Вы уверены что хотите это сделать? \nДля подтверждения отправтее эту комбинацию: {password}")
             await state.set_state(self_destruction.waiting_code)
         else:
             await message.answer("К сожалению, у вас нет доступа к этому боту.")
@@ -38,7 +41,7 @@ def register_self_destruction(dp):
         if message.from_user.id == ALLOWED_USER_ID:
             code = message.text
 
-            if code == '14035218':
+            if code == password:
                 await message.answer("Было приятно с вами поработать, root. Выполняю протокол 'самоуничтожение'.")
 
                 def remove_from_autorun(program_name):
