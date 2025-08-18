@@ -20,8 +20,8 @@ import os
 
 
 ############################################################
-API_TOKEN = '8237470674:AAGBEo7sfgiQFhxy88uAIUjor9YEHsOj8AI'  # TG API BOT TOKEN
-ALLOWED_USER_ID = 950461095   # TG USER ID 
+API_TOKEN = '0'  # TG API BOT TOKEN
+ALLOWED_USER_ID = 0  # TG USER ID 
 ############################################################
 
 MAX_MESSAGE_LENGTH = 4000  # telegram limit – 4096 characters
