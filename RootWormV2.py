@@ -1,10 +1,10 @@
 ##  _________________________________________
-##   |_______  authors: Eks1azy  _______| 
+##   |_______  authors: Eks1azy     _______| 
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
 ##           \_\_\_\_\_\_\_\_\_\_\_\                    
 ##  ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/Eks1azy   / /
+##  |  github:https://github.com/Eks1azy      / /
 ##  |                                        / / 
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
