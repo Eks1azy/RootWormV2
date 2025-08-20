@@ -19,41 +19,79 @@ from aiogram import types, F
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.filters import Command
 import wmi
+from lib.texts import TEXTS, user_languages
 
 from config import ALLOWED_USER_ID 
 
 def register_antivirus_handlers(dp):
-    confirm_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text="Запустить", callback_data="antivirus_confirm"),
-            InlineKeyboardButton(text="Отмена", callback_data="antivirus_cancel")
-        ]
-    ])
 
-    @dp.message(F.text.lower() == "антивирус")
+    def get_confirm_kb(lang='en'):
+        if lang == 'ru':
+            buttons = [
+                InlineKeyboardButton(text="Запустить", callback_data="antivirus_confirm"),
+                InlineKeyboardButton(text="Отмена", callback_data="antivirus_cancel")
+            ]
+        else:
+            buttons = [
+                InlineKeyboardButton(text="Start", callback_data="antivirus_confirm"),
+                InlineKeyboardButton(text="Cancel", callback_data="antivirus_cancel")
+            ]
+        return InlineKeyboardMarkup(inline_keyboard=[buttons])
+
+    @dp.message(F.text.casefold().in_({"антивирус", "antivirus"}))
     @dp.message(Command("antivirus"))
     async def cmd_start(message: types.Message):
+        user_id = message.from_user.id
+        text = message.text.casefold()
+
+        # Определяем язык по команде
+        if text == "антивирус":
+            lang = 'ru'
+        else:
+            lang = user_languages.get(user_id, 'en')
+
+        texts = TEXTS[lang]
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(texts["no_access"])
+            return
+
         await message.answer(
-            "При сканировании возможна детекция антивирусами, используйте на свой страх и риск.",
-            reply_markup=confirm_kb
+            texts.get("antivirus_warning", "При сканировании возможна детекция антивирусами, используйте на свой страх и риск."),
+            reply_markup=get_confirm_kb(lang)
         )
 
     @dp.callback_query(lambda c: c.data in ["antivirus_confirm", "antivirus_cancel"])
     async def process_antivirus_callback(callback: CallbackQuery):
         user_id = callback.from_user.id
+        text = callback.message.text.casefold()
+
+        # Определяем язык по последнему сообщению
+        if "антивирус" in text:
+            lang = 'ru'
+        else:
+            lang = user_languages.get(user_id, 'en')
+
+        texts = TEXTS[lang]
+
         if user_id != ALLOWED_USER_ID:
-            await callback.answer("У вас нет доступа к этой функции.", show_alert=True)
+            await callback.answer(texts["no_access"], show_alert=True)
             return
 
         if callback.data == "antivirus_confirm":
-            c = wmi.WMI(namespace="root/SecurityCenter2")
-            antivirus_products = c.AntiVirusProduct()
-            if antivirus_products:
-                for product in antivirus_products:
-                    await callback.message.answer("Установленные антивирусные программы: " + product.displayName)
-            else:
-                await callback.message.answer("Антивирусные программы не обнаружены.")
-            await callback.answer("Проверка завершена, root.")
+            try:
+                c = wmi.WMI(namespace="root/SecurityCenter2")
+                antivirus_products = c.AntiVirusProduct()
+                if antivirus_products:
+                    for product in antivirus_products:
+                        await callback.message.answer(
+                            texts.get("antivirus_found", "Установленные антивирусные программы: ") + product.displayName
+                        )
+                else:
+                    await callback.message.answer(texts.get("antivirus_not_found", "Антивирусные программы не обнаружены."))
+                await callback.answer(texts.get("antivirus_done", "Проверка завершена, root."))
+            except Exception as e:
+                await callback.message.answer(texts.get("antivirus_error", "Произошла ошибка при проверке антивирусов: {error}").format(error=e))
         else:
-            await callback.answer("Отменено пользователем.")
-            await callback.message.answer("Проверка антивирусов отменена.")
+            await callback.answer(texts.get("antivirus_cancelled", "Отменено пользователем."))
+            await callback.message.answer(texts.get("antivirus_cancel_msg", "Проверка антивирусов отменена."))

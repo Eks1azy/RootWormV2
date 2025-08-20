@@ -20,26 +20,36 @@ from aiogram.types import BufferedInputFile
 from aiogram.filters import Command
 from io import BytesIO
 import pyautogui
+from lib.texts import TEXTS, user_languages
 
 from config import ALLOWED_USER_ID
  
 def register_screenshot_handlers(dp):
-    @dp.message(F.text.lower() == "скриншот")
+    @dp.message(F.text.in_({"Скриншот", "Screenshot"}))
     @dp.message(Command("screenshot"))
     async def send_photo(message: types.Message):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("Сейчас будет, root")
+        user_id = message.from_user.id
 
-            try:
-                screenshot = pyautogui.screenshot()
-                buffer = BytesIO()
-                screenshot.save(buffer, format='PNG')
-                buffer.seek(0)
-
-                photo = BufferedInputFile(buffer.read(), filename="screenshot.png")
-                await message.answer_photo(photo)
-
-            except Exception as e:
-                await message.answer(f"Ошибка при отправке скриншота: {e}")
+        # Определяем язык по кнопке или по словарю
+        if message.text.lower() == "скриншот":
+            lang = 'ru'
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            lang = user_languages.get(user_id, 'en')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang].get("access_denied", "You do not have access to this bot."))
+            return
+
+        await message.answer(TEXTS[lang].get("screenshot_start", "Taking screenshot now, root..."))
+
+        try:
+            screenshot = pyautogui.screenshot()
+            buffer = BytesIO()
+            screenshot.save(buffer, format='PNG')
+            buffer.seek(0)
+
+            photo = BufferedInputFile(buffer.read(), filename="screenshot.png")
+            await message.answer_photo(photo)
+
+        except Exception as e:
+            await message.answer(TEXTS[lang].get("screenshot_error", f"Error sending screenshot: {e}"))
