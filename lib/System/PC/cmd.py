@@ -25,7 +25,7 @@ import subprocess
 
 
 def register_cmd_comand(dp):
-    @dp.message(F.text.lower() == "командная строка")
+    @dp.message(F.text.lower() == "командная строка [new]")
     @dp.message(Command("cmd"))
     async def start_cmd(message: types.Message, state: FSMContext):
         if message.from_user.id == ALLOWED_USER_ID:

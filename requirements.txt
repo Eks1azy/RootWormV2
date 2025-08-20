@@ -13,7 +13,8 @@ opencv-python
 pygetwindow
 pyperclip
 pyaudio
-aiohttp
+aiohttp    
 requests
 GPUtil
-pyarmor
+pyarmor     
+

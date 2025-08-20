@@ -37,7 +37,7 @@ PATHS = {
 }
 
 def register_autofill_handler(dp):
-    @dp.message(F.text.lower() == "автозаполнения браузера")
+    @dp.message(F.text.lower() == "автозаполнения браузера [new]")
     @dp.message(Command("autofill"))
     async def autofill(message: types.Message):
         if message.from_user.id == ALLOWED_USER_ID:

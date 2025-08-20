@@ -27,16 +27,13 @@ def register_close_dp(dp):
     @dp.message(Command("close_task_manager"))
     async def open_url(message: types.Message, state: FSMContext):
         if message.from_user.id == ALLOWED_USER_ID:
-
-                # Проходим по всем процессам и ищем "Taskmgr.exe"
             for proc in psutil.process_iter(['pid', 'name']):
                 if proc.info['name'] == 'Taskmgr.exe':
-                        # Завершаем процесс диспетчера задач
                     psutil.Process(proc.info['pid']).terminate()
-                    await message.answer("Task Manager закрыт.")
+                    await message.answer("Task Manager закрыт, root.")
                     break
             else:
-                await message.answer("Диспетчер задач не запущен.")
+                await message.answer("Диспетчер задач не запущен, root.")
 
         else:
             await message.answer("К сожалению, у вас нет доступа к этому боту.")
