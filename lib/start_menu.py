@@ -1,11 +1,12 @@
 ##  _________________________________________
-##   |_______  authors: Eks1azy  _______| 
+##   |_______  authors: Eks1azy     _______|
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
-##           \_\_\_\_\_\_\_\_\_\_\_\                    
-##  ___________________________________________
+##    \_\_\_|______  Tusay1  _______|\_\_\_\
+##           \_\_\_\_\_\_\_\_\_\_\_\
+##   ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/Eks1azy   / /
-##  |                                        / / 
+##  |  github:https://github.com/Eks1azy      / /
+##  |                                        / /
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
 ##  |    have ideas for improvements,     / /
@@ -13,6 +14,7 @@
 ##  |       please send it to me        / /
 ##  |__________________________________/ /
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
+
 
 
 from aiogram import types
@@ -165,7 +167,7 @@ def register_start_menu_handler(dp):
                 types.KeyboardButton(text="Перезагрузить ПК")               # Working good
             ],
             [
-                types.KeyboardButton(text="Перемистить файл"),              # Working good
+                types.KeyboardButton(text="Перемeстить файл"),              # Working good
                 types.KeyboardButton(text="Поменять обои")                  # Working good
             ],
             [

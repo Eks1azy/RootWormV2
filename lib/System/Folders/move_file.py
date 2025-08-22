@@ -1,10 +1,11 @@
 ##  _________________________________________
-##   |_______  authors: Eks1azy  _______| 
+##   |_______  authors: Eks1azy     _______| 
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
-##           \_\_\_\_\_\_\_\_\_\_\_\                    
-##  ___________________________________________
+##    \_\_\_|______  Tusay1  _______|\_\_\_\
+##           \_\_\_\_\_\_\_\_\_\_\_\                  
+##   ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/Eks1azy   / /
+##  |  github:https://github.com/Eks1azy      / /
 ##  |                                        / / 
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
@@ -25,7 +26,7 @@ import shutil
 import os
 
 def register_move_file(dp):
-    @dp.message(F.text.lower() == "перемистить файл")
+    @dp.message(F.text.lower() == "перемeстить файл")
     @dp.message(Command("move_file"))
     async def start_move_file(message: types.Message, state: FSMContext):
         if message.from_user.id == ALLOWED_USER_ID:
