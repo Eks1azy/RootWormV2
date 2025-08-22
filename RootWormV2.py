@@ -130,7 +130,7 @@ def RootWorm3():
         "                                                                                ",
        f"{let}________________________________________________________{clear}            ", 
        f"[{let}*{clear}] RootWorm{ler}V2{clear} RAT                                      ", 
-       f"[{let}*{clear}] Authors        {let}|{clear} Eks1azy, Oqwe4O            ", 
+       f"[{let}*{clear}] Authors        {let}|{clear} Eks1azy, Oqwe4O, Tusay1            ", 
        f"[{let}*{clear}] Github         {let}|{clear} https://github.com/Eks1azy      ",      
        f"              {let}______________________________________/{clear}               "    
     ]
