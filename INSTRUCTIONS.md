@@ -7,7 +7,7 @@ This script is built with **Python 3.10.0**.
 pip install -r requirements.txt
 ```
 
-2. Configure the Script
+## 2. Configure the Script
 
     Make sure to set your Bot API token and User ID in the `config.py` file:
 
