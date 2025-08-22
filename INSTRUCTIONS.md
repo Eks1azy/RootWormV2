@@ -2,12 +2,12 @@
 
 This script is built with **Python 3.10.0**.
 
-__1. Install Dependencies__
+1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-**2. Configure the Script**
+2. Configure the Script
 
     Make sure to set your Bot API token and User ID in the `config.py` file:
 
@@ -29,13 +29,13 @@ pip install -r requirements.txt
 
     line 325: bot.py  
 
-3. Optional: Minify the Project
+**3. Optional: Minify the Project**
 
 ```bash
 python minify_script.py
 ```
 
-4. Change your Directory
+__4. Change your Directory__
 
     Go in your new output_dir which you indicated earlier!!! to run RootWormV2.py
 
