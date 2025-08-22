@@ -1,11 +1,12 @@
 ##  _________________________________________
-##   |_______  authors: Eks1azy  _______| 
+##   |_______  authors: Eks1azy     _______|
 ##    \_\_\_|______  Oqwe4O  _______|\_\_\_\
-##           \_\_\_\_\_\_\_\_\_\_\_\                    
-##  ___________________________________________
+##    \_\_\_|______  Tusay1  _______|\_\_\_\
+##           \_\_\_\_\_\_\_\_\_\_\_\
+##   ___________________________________________
 ##  |                                          /\
-##  |  github:https://github.com/Eks1azy   / /
-##  |                                        / / 
+##  |  github:https://github.com/Eks1azy      / /
+##  |                                        / /
 ##  |    if you will find some bugs or      / /
 ##  |                                      / /
 ##  |    have ideas for improvements,     / /
@@ -20,8 +21,8 @@ import os
 
 
 ############################################################
-API_TOKEN = ' '   # TG API BOT TOKEN
-ALLOWED_USER_ID =                                      # TG USER ID
+API_TOKEN = ''   # TG API BOT TOKEN
+ALLOWED_USER_ID =                      # TG USER ID
 ############################################################
 
 
