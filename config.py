@@ -22,7 +22,7 @@ import os
 
 ############################################################
 API_TOKEN = ''   # TG API BOT TOKEN
-ALLOWED_USER_ID =                      # TG USER ID
+ALLOWED_USER_ID =                   # TG USER ID
 ############################################################
 
 
