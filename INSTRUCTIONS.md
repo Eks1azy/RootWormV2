@@ -55,9 +55,10 @@ python RootWormV2.py
 
     Enter the name for the generated executable file.
 
-    Select an image file (any format) to bind to the executable.
+    - Select an image file (any format) to bind to the executable.
 
-    Choose the installation mode:
+    - Choose the installation mode:
 
-    Option 1 – Fast build (1–2 minutes), but easier to detect.
-    Option 2 – Slower build (5–15 minutes), but significantly more stealthy.
+    - Option 1 – Fast build (1–2 minutes), but easier to detect.
+
+    - Option 2 – Slower build (5–15 minutes), but significantly more stealthy.
