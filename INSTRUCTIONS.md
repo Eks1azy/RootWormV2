@@ -10,10 +10,12 @@ pip install -r requirements.txt
 2. Configure the Script
 
     Make sure to set your Bot API token and User ID in the config.py file:
-    ![Step 1: change token](image/config.png)
-        Line 23: `API_TOKEN`
 
-        Line 24: `USER_ID`
+    ![Step 1: change token](image/config.png)
+
+    Line 23: `API_TOKEN`
+
+    Line 24: `USER_ID`
 
     Make sure to set your variables in minify_script.py
 
