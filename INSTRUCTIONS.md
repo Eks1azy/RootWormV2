@@ -33,7 +33,7 @@ pip install -r requirements.txt
 python minify_script.py
 ```
 
-## 4. Change your Directory
+4. Change your Directory
 
     Go in your new output_dir which you indicated earlier!!! to run RootWormV2.py
 
