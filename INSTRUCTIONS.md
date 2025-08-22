@@ -2,12 +2,12 @@
 
 This script is built with **Python 3.10.0**.
 
-1. Install Dependencies
+__1. Install Dependencies__
 ```bash
 pip install -r requirements.txt
 ```
 
-## 2. Configure the Script
+**2. Configure the Script**
 
     Make sure to set your Bot API token and User ID in the `config.py` file:
 
