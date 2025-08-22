@@ -9,7 +9,7 @@ pip install -r requirements.txt
 
 2. Configure the Script
 
-    Make sure to set your Bot API token and User ID in the config.py file:
+    Make sure to set your Bot API token and User ID in the `config.py` file:
 
     ![Step 1: change token](image/config.png)
 
@@ -19,15 +19,15 @@ pip install -r requirements.txt
 
     Make sure to set your variables in minify_script.py
 
-        Line 7: source_dir — set to your source directory path
+    Line 7: `source_dir` — set to your source directory path
 
-        Line 8: output_dir — set to your desired output directory path
+    Line 8: `output_dir` — set to your desired output directory path
 
-    Ensure that the copy_and_run() function is UNCOMMETED in both of the following files:
+    Ensure that the `copy_and_run()` function is UNCOMMETED in both of the following files:
 
-        Line 54:  lib/func.py 
+    Line 54:  lib/func.py 
 
-        line 325: bot.py  
+    line 325: bot.py  
 
 3. Optional: Minify the Project
 
