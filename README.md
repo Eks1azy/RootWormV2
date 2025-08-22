@@ -26,4 +26,4 @@ This tool is shared to promote learning in ethical cybersecurity and reverse eng
 
 ---
 
-**© 2025 – RootWormV2 by Eks1azy, Oqwe4O**
+**© 2025 – RootWormV2 by Eks1azy, Oqwe4O, Tusay1**
