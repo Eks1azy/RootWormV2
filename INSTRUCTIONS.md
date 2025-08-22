@@ -3,9 +3,9 @@
 This script is built with **Python 3.10.0**.
 
 ## 1. Install Dependencies
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
 
 ## 2. Configure the Script
 
@@ -29,9 +29,9 @@ This script is built with **Python 3.10.0**.
 
 ## 3. Optional: Minify the Project
 
-    ```bash
-    python minify_script.py
-    ```
+```bash
+python minify_script.py
+```
 
 ## 4. Change your Directory
 
@@ -39,9 +39,9 @@ This script is built with **Python 3.10.0**.
 
 ## 5. Launch the Main Script
 
-    ```bash
-    python RootWormV2.py
-    ```
+```bash
+python RootWormV2.py
+```
 
 ## 6. Runtime Options
 
