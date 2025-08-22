@@ -9,7 +9,7 @@ pip install -r requirements.txt
 
 2. Configure the Script
 
-    Make sure to set your Bot API token and User ID in the `config.py` file:
+    - Make sure to set your Bot API token and User ID in the `config.py` file:
 
     ![Step 1: change token](image/config.png)
 
@@ -17,25 +17,29 @@ pip install -r requirements.txt
 
     Line 24: `USER_ID`
 
-    Make sure to set your variables in minify_script.py
+    - Make sure to set your variables in minify_script.py
+
+    ![Step 2: change variables](image/manify.png)
 
     Line 7: `source_dir` — set to your source directory path
 
     Line 8: `output_dir` — set to your desired output directory path
 
-    Ensure that the `copy_and_run()` function is UNCOMMETED in both of the following files:
+    - Ensure that the `copy_and_run()` function is UNCOMMETED in both of the following files:
 
+    ![Step 3: uncommeted](image/func1.jpg)
     Line 54:  lib/func.py 
 
+    ![Step 3: uncommeted](image/func2.jpg)
     line 325: bot.py  
 
-**3. Optional: Minify the Project**
+3. Optional: Minify the Project
 
 ```bash
 python minify_script.py
 ```
 
-__4. Change your Directory__
+4. Change your Directory
 
     Go in your new output_dir which you indicated earlier!!! to run RootWormV2.py
 
@@ -46,6 +50,8 @@ python RootWormV2.py
 ```
 
 6. Runtime Options
+
+    ![Step 4: build](image/build.jpg)
 
     Enter the name for the generated executable file.
 
