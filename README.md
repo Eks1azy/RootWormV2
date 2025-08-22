@@ -10,7 +10,7 @@ This project is intended **strictly for educational and research purposes** to s
 Using this software to access or control systems **without explicit permission** is **illegal** and **strictly prohibited**.
 
 By cloning, downloading, or using this code, you agree that:
-- You are using it in a **controlled, ethical, and legal environment**.
+- You are using it in a **controlled, ethical, and legal environments**.
 - The developers and contributors are **not responsible** for any misuse or damage caused by this software.
 
 ## 📚 Purpose
