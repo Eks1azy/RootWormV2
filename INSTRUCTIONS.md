@@ -3,12 +3,9 @@
 This script is built with **Python 3.10.0**.
 
 ## 1. Install Dependencies
-
-Open your terminal and run:
-
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## 2. Configure the Script
 
