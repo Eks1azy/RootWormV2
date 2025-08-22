@@ -322,7 +322,7 @@ if __name__ == "__main__":
 
     ########### UNCOMMIT WHEN YOU WILL BUILD EXE ###########
 
-    copy_and_run()
+    # copy_and_run()
 
     script_path = 'C:\\ProgramData\\MediaTask\\MediaTask.exe'
 
