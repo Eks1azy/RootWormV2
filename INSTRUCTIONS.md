@@ -28,9 +28,11 @@ pip install -r requirements.txt
     - Ensure that the `copy_and_run()` function is UNCOMMETED in both of the following files:
 
     ![Step 3: uncommeted](image/func1.jpg)
+
     Line 54:  lib/func.py 
 
     ![Step 3: uncommeted](image/func2.jpg)
+    
     line 325: bot.py  
 
 3. Optional: Minify the Project
