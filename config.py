@@ -21,8 +21,8 @@ import os
 
 
 ############################################################
-API_TOKEN = ''   # TG API BOT TOKEN
-ALLOWED_USER_ID =                   # TG USER ID
+API_TOKEN = '0'   # TG API BOT TOKEN
+ALLOWED_USER_ID = 0          # TG USER ID
 ############################################################
 
 
