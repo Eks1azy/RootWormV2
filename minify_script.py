@@ -4,8 +4,8 @@ import python_minifier
 # Путь к исходному проекту и куда копировать минифицированную версию
 
 #########################################################
-source_dir = r"0" # Папка с исходными файлами проекта ( Ваш )
-output_dir = r"0" # Папка для минифицированных файлов ( Ваш )
+source_dir = r"D:\Programming\RootWorm-main\RootWormV2" # Папка с исходными файлами проекта ( Ваш )
+output_dir = r"D:\Programming\RootWorm-main\RootWormV2_minified" # Папка для минифицированных файлов ( Ваш )
 #########################################################
 
 def minify_file(source_path, target_path):

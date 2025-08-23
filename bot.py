@@ -288,7 +288,12 @@ TEXTS = {
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     user_id = message.from_user.id
-    lang = user_languages.get(user_id, 'en')
+
+    # Устанавливаем язык по умолчанию, если его ещё нет
+    if user_id not in user_languages:
+        user_languages[user_id] = 'en'  # или 'ru' — по твоему выбору
+
+    lang = user_languages[user_id]
     text = TEXTS[lang]['start']
     await message.answer(text)
 

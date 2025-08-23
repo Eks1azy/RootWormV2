@@ -27,20 +27,27 @@ from cryptography.hazmat.primitives import padding
 import os
 import time
 from cryptography.hazmat.backends import default_backend
+from lib.texts import TEXTS, user_languages
 
 def register_discrypt(dp):
-    @dp.message(F.text.lower() == "расшифровать файл")
+    @dp.message(F.text.lower().in_(["расшифровать файл", "decrypt file"]))
     @dp.message(Command("decipher_file"))
     async def start_decipher(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("Укажите путь и расширение файла и в конце укажите '.enc', пример:\n C:/Users/Public/Название_файла.txt.enc")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['ask_enc_path'])
             await state.set_state(Decipher.waiting_d_enc)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(Decipher.waiting_d_enc)
     async def process_file_path(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
             encrypted_file_path = message.text
 
             try:
@@ -56,20 +63,16 @@ def register_discrypt(dp):
                         )
                         return kdf.derive(password.encode())
 
-                    # Функция расшифровки данных
                     def decrypt_file(encrypted_file_path: str, password: str):
                         try:
                             with open(encrypted_file_path, 'rb') as f:
-                                # Считываем соль, IV и зашифрованные данные
-                                salt = f.read(16)  # Первые 16 байт - это соль
-                                iv = f.read(16)  # Следующие 16 байт - это IV
-                                encrypted_data = f.read()  # Остальные данные - зашифрованные
+                                salt = f.read(16)
+                                iv = f.read(16)
+                                encrypted_data = f.read()
 
                             key = generate_key(password, salt)
-
                             cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
                             decryptor = cipher.decryptor()
-
                             decrypted_padded_data = decryptor.update(encrypted_data) + decryptor.finalize()
 
                             unpadder = padding.PKCS7(128).unpadder()
@@ -90,31 +93,30 @@ def register_discrypt(dp):
                     new_file_path = os.path.splitext(decrypted_file_path)[0]
 
                     if decrypted_file_path and os.path.exists(decrypted_file_path):
-                        await message.answer(f'Файл {encrypted_file_path} успешно расшифрован как {new_file_path}')
+                        await message.answer(TEXTS[lang]['decryption_success'].format(
+                            enc=encrypted_file_path, dec=new_file_path))
 
                         try:
                             os.remove(encrypted_file_path)
                             try:
                                 os.rename(decrypted_file_path, new_file_path)
                             except FileNotFoundError:
-                                await message.answer(f"Файл {decrypted_file_path} не найден")
+                                await message.answer(TEXTS[lang]['rename_error_not_found'].format(path=decrypted_file_path))
                             except PermissionError:
-                                await message.answer(f"Нет прав на изменение имени файла {decrypted_file_path}")
+                                await message.answer(TEXTS[lang]['rename_error_permission'].format(path=decrypted_file_path))
                             except Exception as e:
-                                await message.answer(f"Произошла ошибка: {e}")
-
+                                await message.answer(TEXTS[lang]['rename_error_general'].format(error=e))
                         except Exception as e:
                             logger.error(f"Ошибка при удалении файла {encrypted_file_path}: {e}")
 
                     elif decrypted_file_path is None:
-                        await message.answer(f'Произошла ошибка при расшифровке файла {encrypted_file_path}. Процесс прекращён.')
+                        await message.answer(TEXTS[lang]['decryption_error'].format(path=encrypted_file_path))
                 else:
-                    await message.answer(f"Файл {encrypted_file_path} не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.")
+                    await message.answer(TEXTS[lang]['file_not_found'].format(path=encrypted_file_path))
             except Exception as e:
                 logger.error(f"Ошибка при обработке пути файла {encrypted_file_path}: {e}")
-                await message.answer("Произошла ошибка. Попробуйте снова.")
+                await message.answer(TEXTS[lang]['general_error'])
             finally:
-                # Завершаем состояние с помощью метода clear
                 await state.clear()
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])

@@ -21,32 +21,42 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import waitmas
+from lib.texts import TEXTS, user_languages
+from lib.states import logger
 
 import os 
 
 def register_delete_file(dp):
-    @dp.message(F.text.lower() == "удалить файл")
+    @dp.message(F.text.lower().in_(["удалить файл", "delete file"]))
     @dp.message(Command("delete_file"))
     async def send_file(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer(
-                "Укажите путь и расширение файла которого хотите удалить, пример:\n C:/Users/Public/Название_файла.txt")
-            await state.set_state(waitmas.file_name_delet)  # Переходим в состояние ожидания имени папки
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
 
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['ask_delete_path'])
+            await state.set_state(waitmas.file_name_delet)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
-
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(waitmas.file_name_delet)
     async def process_send_file(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            directory_file_delet = message.text  # Путь к файлу
-            # Проверяем, существует ли файл
-            if os.path.exists(directory_file_delet):
-                os.remove(directory_file_delet)  # Удаляем файл
-                await message.answer(f"Файл '{directory_file_delet}' успешно удален.")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
+            file_path = message.text
+
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                    await message.answer(TEXTS[lang]['file_deleted'].format(path=file_path))
+                except Exception as e:
+                    logger.error(f"Ошибка при удалении файла {file_path}: {e}")
+                    await message.answer(TEXTS[lang]['delete_error'].format(path=file_path))
             else:
-                await message.answer(f"Файл '{directory_file_delet}' не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.")
-            await state.clear()  # Завершаем состояние (aiogram 3.x)
+                await message.answer(TEXTS[lang]['file_not_found'].format(path=file_path))
+
+            await state.clear()
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])

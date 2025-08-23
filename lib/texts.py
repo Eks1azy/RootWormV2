@@ -71,7 +71,95 @@ TEXTS = {
         "antivirus_cancel_msg": "Проверка антивирусов отменена.",
         "antivirus_error": "Произошла ошибка при проверке антивирусов: {error}",
 
+        "ask_enc_path": "Укажите путь и расширение файла и в конце укажите '.enc', пример:\n C:/Users/Public/Название_файла.txt.enc",
+        "file_not_found": "Файл {path} не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.",
+        "decryption_success": "Файл {enc} успешно расшифрован как {dec}",
+        "decryption_error": "Произошла ошибка при расшифровке файла {path}. Процесс прекращён.",
+        "rename_error_not_found": "Файл {path} не найден",
+        "rename_error_permission": "Нет прав на изменение имени файла {path}",
+        "rename_error_general": "Произошла ошибка: {error}",
+        "general_error": "Произошла ошибка. Попробуйте снова.",
+
+        'ask_encrypt_path': "Укажите путь и расширение файла, пример:\n C:/Users/Public/Название_файла.txt",
+        'encrypt_success': "Файл {path} успешно зашифрован и сохранён как {enc_path}",
+        'encrypt_success_with_delete_error': "Файл {path} успешно зашифрован, но произошла ошибка при удалении исходного файла.",
+        'encrypt_error': "Произошла ошибка при шифровании файла {path}. Процесс прекращён.",
+        'file_not_found': "Файл {path} не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.",
+        'general_error': "Произошла ошибка. Попробуйте снова.",
         
+        'ask_delete_path': "Укажите путь и расширение файла, который хотите удалить, пример:\n C:/Users/Public/Название_файла.txt",
+        'file_deleted': "Файл '{path}' успешно удалён.",
+        'delete_error': "Произошла ошибка при удалении файла '{path}'.",
+
+        'ask_download_path': "Укажите путь и расширение файла, пример:\n C:/Users/Public/Название_файла.txt",
+        'file_too_large': "Файл слишком большой ({size:.2f} MB). Максимальный размер файла - 50 MB.",
+        'send_file_error': "Произошла ошибка при отправке файла: {error}",
+
+        'ask_upload_path': "Укажите путь, куда необходимо загрузить файл, пример:\n C:/Users/Public",
+        'upload_invalid_path': "Неверный путь. Убедитесь, что папка существует.",
+        'upload_invalid_path_final': "Не удалось найти директорию. Повторите попытку, перезапустив процесс.",
+        'upload_ready': "Отправьте файл, который будет сохранён по этому пути:\n{path}",
+        'upload_missing_path': "Сначала укажите корректный путь для сохранения файла.\nПопробуйте снова, перезапустив команду.",
+        'upload_no_supported_file': "В сообщении нет поддерживаемого файла.",
+        'upload_saving': "Принял, сохраняю...",
+        'upload_success': "Файл '{name}' успешно сохранён в:\n{path}",
+        'upload_error': "Ошибка при сохранении файла: {error}",
+
+        'altf4_success': "Окно было успешно закрыто.",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'minimize_windows_success': "Окна были успешно свёрнуты",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'create_folder_prompt': "Укажите путь где создать папку и вконце название папки, пример:\n C:/Users/Public/Название_папки",
+        'folder_created': "Папка '{folder_name}' успешно создана!",
+        'folder_exists': "Папка с именем '{folder_name}' уже существует!",
+        'folder_invalid_path': "Пожалуйста, укажите полный путь к папке, а не только её название.",
+        'try_again': "Попробуйте снова. Перезапустив процесс.",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'delete_folder_prompt': "Укажите путь и вконце название папки, пример:\n C:/Users/Public/Название_папки\n!!!Папка удаляется со всем содержимым!!!",
+        'folder_deleted': "Папка '{folder_name}' и все её содержимое успешно удалены.",
+        'folder_not_found': "Папка '{folder_name}' не найдена. Пожалуйста, введите корректный путь к папке",
+        'try_again': "Попробуйте снова. Перезапустив процесс.",
+        'folder_delete_error': "Ошибка при удалении папки: {error}",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'move_file_prompt_source': "Хорошо, введите путь файла, который хотите переместить (например, C:/Users/Public/Название_файла.txt):",
+        'move_file_prompt_dest': "Теперь введите путь, куда нужно переместить файл (например, C:/Users/Public/Целевая_папка/):",
+        'move_file_success': "Файл успешно перемещён в {destination_path}.",
+        'move_file_not_found': "Файл не найден. Пожалуйста, убедитесь, что путь к файлу указан правильно и перезапустите процесс.",
+        'move_dir_not_found': "Целевая директория не найдена. Пожалуйста, убедитесь, что путь к директории указан правильно и перезапустите процесс.",
+        'move_file_no_permission': "Недостаточно прав для перемещения файла. Пожалуйста, проверьте права доступа.",
+        'move_file_os_error': "Ошибка доступа к файлу или директории: {error}",
+        'move_file_unknown_error': "Произошла непредвиденная ошибка: {error}",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'open_file_prompt': "Укажите путь и имя файла с его расширением, пример:\n C:/Users/Public/Название_файла.txt",
+        'open_file_success': "Файл был успешно открыт.",
+        'open_file_not_found': "Файл {file_path} не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.",
+        'open_file_error': "Произошла ошибка при открытии файла: {error}",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'keylogger_started': "Кейлоггер запущен, root",
+        'keylogger_already_running': "Кейлоггер уже работает, root",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'keylogs_sending': "Отправляю логи, root",
+        'keylogs_missing': "Файл логов пока отсутствует, root",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'clipboard_view': "Содержимое буфера обмена:\n{content}",
+        'clipboard_edit_prompt': "Хорошо, отправь мне текст, на который хочешь заменить буфер обмена",
+        'clipboard_edit_success': "Текст успешно помещен в буфер обмена!",
+        'no_access': "К сожалению, у вас нет доступа к этому боту.",
+
+        'clipboard_content': "Содержимое буфера обмена",
+        'clipboard_ask_new': "Хорошо, отправь мне текст, на который хочешь заменить буфер обмена",
+        'clipboard_success': "Текст успешно помещен в буфер обмена!",
+
+        'task_manager_closed': "Диспетчер задач закрыт.",
+        'task_manager_not_running': "Диспетчер задач не запущен.",
         
     },
     'en': {
@@ -141,6 +229,96 @@ TEXTS = {
         "antivirus_done": "Scan completed, root.",
         "antivirus_cancelled": "Cancelled by user.",
         "antivirus_cancel_msg": "Antivirus scan cancelled.",
-        "antivirus_error": "An error occurred during antivirus scan: {error}"
+        "antivirus_error": "An error occurred during antivirus scan: {error}",
+
+        "ask_enc_path": "Specify the full path to the file including the '.enc' extension, e.g.:\n C:/Users/Public/File_name.txt.enc",
+        "file_not_found": "The file {path} was not found.\nPlease check the path and file name and try again.",
+        "decryption_success": "The file {enc} was successfully decrypted as {dec}",
+        "decryption_error": "An error occurred while decrypting the file {path}. Process aborted.",
+        "rename_error_not_found": "File {path} not found",
+        "rename_error_permission": "No permission to rename file {path}",
+        "rename_error_general": "An error occurred: {error}",
+        "general_error": "An error occurred. Please try again.",
+
+        'ask_encrypt_path': "Enter the file path and extension, e.g.,\n C:/Users/Public/File_Name.txt",
+        'encrypt_success': "File {path} encrypted successfully and saved as {enc_path}",
+        'encrypt_success_with_delete_error': "File {path} was encrypted, but an error occurred while deleting the original file.",
+        'encrypt_error': "An error occurred while encrypting file {path}. Process aborted.",
+        'file_not_found': "File {path} was not found. \nPlease check the file path and name, then try again.",
+        'general_error': "An error occurred. Please try again.",
+
+        'ask_delete_path': "Enter the full path and extension of the file you want to delete, e.g.,\n C:/Users/Public/File_Name.txt",
+        'file_deleted': "File '{path}' has been successfully deleted.",
+        'delete_error': "An error occurred while deleting the file '{path}'.",
+
+        'ask_download_path': "Enter the full path and extension of the file, e.g.,\n C:/Users/Public/File_Name.txt",
+        'file_too_large': "The file is too large ({size:.2f} MB). The maximum file size is 50 MB.",
+        'send_file_error': "An error occurred while sending the file: {error}",
+
+        'ask_upload_path': "Enter the path where the file should be saved, e.g.,\n C:/Users/Public",
+        'upload_invalid_path': "Invalid path. Make sure the directory exists.",
+        'upload_invalid_path_final': "Failed to find the directory. Please restart the process and try again.",
+        'upload_ready': "Send the file that will be saved to:\n{path}",
+        'upload_missing_path': "You must first specify a valid path to save the file. Please restart the command.",
+        'upload_no_supported_file': "No supported file found in the message.",
+        'upload_saving': "Received. Saving...",
+        'upload_success': "File '{name}' successfully saved to:\n{path}",
+        'upload_error': "Error while saving the file: {error}",
+
+        'altf4_success': "Window was closed successfully.",
+        'no_access': "Unfortunately, you don't have access to this bot.",
+
+        'minimize_windows_success': "Windows were successfully minimized",
+        'no_access': "Unfortunately, you don't have access to this bot.",
+
+        'create_folder_prompt': "Specify the path where to create the folder, including the folder name, example:\n C:/Users/Public/Folder_Name",
+        'folder_created': "Folder '{folder_name}' has been successfully created!",
+        'folder_exists': "A folder named '{folder_name}' already exists!",
+        'folder_invalid_path': "Please provide the full path to the folder, not just its name.",
+        'try_again': "Try again by restarting the process.",
+        'no_access': "Unfortunately, you don't have access to this bot.",
+
+        'delete_folder_prompt': "Specify the full path and folder name to delete, example:\n C:/Users/Public/Folder_Name\n!!!The folder will be deleted with all its contents!!!",
+        'folder_deleted': "Folder '{folder_name}' and all its contents have been successfully deleted.",
+        'folder_not_found': "Folder '{folder_name}' not found. Please enter a correct folder path",
+        'try_again': "Try again by restarting the process.",
+        'folder_delete_error': "Error deleting folder: {error}",
+        'no_access': "Unfortunately, you don't have access to this bot.",
+
+        'move_file_prompt_source': "Please enter the path of the file you want to move (e.g., C:/Users/Public/File_Name.txt):",
+        'move_file_prompt_dest': "Now enter the path to move the file to (e.g., C:/Users/Public/Target_Folder/):",
+        'move_file_success': "File successfully moved to {destination_path}.",
+        'move_file_not_found': "File not found. Please make sure the file path is correct and restart the process.",
+        'move_dir_not_found': "Target directory not found. Please make sure the directory path is correct and restart the process.",
+        'move_file_no_permission': "Insufficient permissions to move the file. Please check your access rights.",
+        'move_file_os_error': "File or directory access error: {error}",
+        'move_file_unknown_error': "An unexpected error occurred: {error}",
+        'no_access': "You do not have access to this bot.",
+
+        'open_file_prompt': "Enter the full path and name of the file, e.g., C:/Users/Public/File_Name.txt",
+        'open_file_success': "File was successfully opened.",
+        'open_file_not_found': "File {file_path} was not found. \nPlease check the path and file name, then try again.",
+        'open_file_error': "An error occurred while opening the file: {error}",
+        'no_access': "You do not have access to this bot.",
+
+        'keylogger_started': "Keylogger started, root",
+        'keylogger_already_running': "Keylogger is already running, root",
+        'no_access': "You do not have access to this bot.",
+
+        'keylogs_sending': "Sending logs, root",
+        'keylogs_missing': "Log file is not available yet, root",
+        'no_access': "You do not have access to this bot.",
+
+        'clipboard_view': "Clipboard content:\n{content}",
+        'clipboard_edit_prompt': "Send me the text you want to set in the clipboard",
+        'clipboard_edit_success': "Text successfully copied to clipboard!",
+        'no_access': "You do not have access to this bot.",
+
+        'clipboard_content': "Clipboard content",
+        'clipboard_ask_new': "Okay, send me the text to replace the clipboard content",
+        'clipboard_success': "Text has been successfully copied to the clipboard!",
+
+        'task_manager_closed': "Task Manager has been closed.",
+        'task_manager_not_running': "Task Manager is not running.",
     }
 }

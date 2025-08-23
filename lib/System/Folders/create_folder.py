@@ -20,41 +20,42 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import Form
+from lib.texts import TEXTS, user_languages
 
 import os
 
 def register_create_folder(dp):
-    @dp.message(F.text.lower() == "создать папку")
+    @dp.message(F.text.lower().in_({"создать папку", "create folder"}))
     @dp.message(Command("create_folder"))
     async def create_folder_command(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer(
-                "Укажите путь где создать папку и вконце название папки, пример:\n C:/Users/Public/Название_папки")
-            await state.set_state(Form.folder_name)  # Переходим в состояние ожидания имени папки
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
 
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['create_folder_prompt'])
+            await state.set_state(Form.folder_name)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(Form.folder_name)
     async def process_folder_name(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
             folder_name = message.text
 
-            # Проверяем, содержит ли введенный текст полный путь (например, наличие "/")
-            if os.path.dirname(folder_name):  # Если есть путь
+            if os.path.dirname(folder_name):
                 if not os.path.exists(folder_name):
-                    os.makedirs(folder_name, exist_ok=True)  # Создаем папку
-                    await message.answer(f"Папка '{folder_name}' успешно создана!")
-                    await state.clear()  # Сброс состояния после успешного завершения
+                    os.makedirs(folder_name, exist_ok=True)
+                    await message.answer(TEXTS[lang]['folder_created'].format(folder_name=folder_name))
+                    await state.clear()
                 else:
-                    await message.answer(f"Папка с именем '{folder_name}' уже существует!")
-                    await state.clear()  # Сброс состояния после успешного завершения
-            else:  # Если введено только название без пути
-                await message.answer("Пожалуйста, укажите полный путь к папке, а не только её название.")
-                # Перезапускаем процесс создания папки
-                await message.answer("Попробуйте снова. Перезапустив процесс.")
-                await state.clear()  # Сброс состояния после успешного завершения
-
-
+                    await message.answer(TEXTS[lang]['folder_exists'].format(folder_name=folder_name))
+                    await state.clear()
+            else:
+                await message.answer(TEXTS[lang]['folder_invalid_path'])
+                await message.answer(TEXTS[lang]['try_again'])
+                await state.clear()
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])

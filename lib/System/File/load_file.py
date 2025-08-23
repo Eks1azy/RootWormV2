@@ -21,66 +21,70 @@ from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID, bot, MAX_ATTEMPTS
 from lib.states import DirectoryStateSaveFiles
 from aiogram.types import ContentType
+from lib.texts import TEXTS, user_languages
 
 import os 
 
 def register_load_file(dp):
-    @dp.message(F.text.lower() == "загрузить файл")
+    @dp.message(F.text.lower().in_(["загрузить файл", "upload file"]))
     @dp.message(Command("upload_file"))
     async def handle_text_message(message: types.Message, state: FSMContext):
-        if message.text.lower() == "загрузить файл":
-            if message.from_user.id == ALLOWED_USER_ID:
-                await message.answer(
-                    "Укажите путь, куда необходимо загрузить файл, пример:\n C:/Users/Public"
-                )
-                await state.set_state(DirectoryStateSaveFiles.waiting_for_directory_saveFiles)  # Переход в состояние ожидания пути файла
-                await state.update_data(attempts=0)  # Инициализация счетчика попыток
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
 
-            else:
-                await message.answer("К сожалению, у вас нет доступа к этому боту.")
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['ask_upload_path'])
+            await state.set_state(DirectoryStateSaveFiles.waiting_for_directory_saveFiles)
+            await state.update_data(attempts=0)
+        else:
+            await message.answer(TEXTS[lang]['no_access'])
 
-    # Обработчик для ввода новой директории
     @dp.message(DirectoryStateSaveFiles.waiting_for_directory_saveFiles)
     async def set_new_directory(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            directoryForSaveFiles = message.text
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
+            directory = message.text
             data = await state.get_data()
             attempts = data.get('attempts', 0)
 
-            if not directoryForSaveFiles or not os.path.isdir(directoryForSaveFiles):
+            if not directory or not os.path.isdir(directory):
                 attempts += 1
                 if attempts >= MAX_ATTEMPTS:
-                    await message.answer("Не удалось найти директорию. Повторите попытку, перезапустив процесс.")
-                    await state.clear()  # Завершаем состояние
-
+                    await message.answer(TEXTS[lang]['upload_invalid_path_final'])
+                    await state.clear()
+                else:
+                    await state.update_data(attempts=attempts)
+                    await message.answer(TEXTS[lang]['upload_invalid_path'])
             else:
-                await state.update_data(directoryForSaveFiles=directoryForSaveFiles, attempts=0)
-                await message.answer(
-                    f'Отправьте файл, который будет сохранен по этому пути:\n{directoryForSaveFiles}')
+                await state.update_data(directoryForSaveFiles=directory, attempts=0)
+                await message.answer(TEXTS[lang]['upload_ready'].format(path=directory))
                 await state.set_state(DirectoryStateSaveFiles.waiting_for_files)
-
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(DirectoryStateSaveFiles.waiting_for_files, F.content_type.in_([ContentType.PHOTO, ContentType.DOCUMENT, ContentType.AUDIO]))
     async def handle_document_or_audio(message: types.Message, state: FSMContext):
-        if message.from_user.id != ALLOWED_USER_ID:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['no_access'])
             return
 
         user_data = await state.get_data()
-        directoryForSaveFiles = user_data.get('directoryForSaveFiles')
+        directory = user_data.get('directoryForSaveFiles')
 
-        if not directoryForSaveFiles or not os.path.isdir(directoryForSaveFiles):
-            await message.reply("Необходимо сначала указать корректный путь для сохранения файла. \nПопробуйте снова, перезапустив команду.")
+        if not directory or not os.path.isdir(directory):
+            await message.reply(TEXTS[lang]['upload_missing_path'])
             await state.clear()
             return
 
-        # Выбор файла (документ, фото, аудио)
         if message.document:
             document = message.document
             file_id = document.file_id
-            file_name = document.file_name if document.file_name else "document.bin"
+            file_name = document.file_name or "document.bin"
         elif message.photo:
             document = message.photo[-1]
             file_id = document.file_id
@@ -88,25 +92,24 @@ def register_load_file(dp):
         elif message.audio:
             document = message.audio
             file_id = document.file_id
-            file_name = document.file_name if document.file_name else "audio.mp3"
+            file_name = document.file_name or "audio.mp3"
         else:
-            await message.reply("В сообщении нет поддерживаемого файла.")
+            await message.reply(TEXTS[lang]['upload_no_supported_file'])
             return
 
         try:
-            await message.reply("Принял, сохраняю...")
+            await message.reply(TEXTS[lang]['upload_saving'])
             file_info = await bot.get_file(file_id)
             file_path = file_info.file_path
 
             file = await bot.download_file(file_path)
-            save_path = os.path.join(directoryForSaveFiles, file_name)
+            save_path = os.path.join(directory, file_name)
 
             with open(save_path, 'wb') as f:
                 f.write(file.read())
 
-            await message.reply(f"Файл '{file_name}' успешно сохранён в:\n{directoryForSaveFiles}")
-            await state.clear()
-
+            await message.reply(TEXTS[lang]['upload_success'].format(name=file_name, path=directory))
         except Exception as e:
-            await message.reply(f"Ошибка при сохранении файла: {e}")
+            await message.reply(TEXTS[lang]['upload_error'].format(error=e))
+        finally:
             await state.clear()

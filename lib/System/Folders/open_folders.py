@@ -19,41 +19,41 @@ from aiogram import types, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from lib.states import Openfile
-from config import ALLOWED_USER_ID, MAX_MESSAGE_LENGTH, MAX_ATTEMPTS
+from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 import os
 
 def register_open_file_handlers(dp):
-    @dp.message(F.text.lower() == "открыть файл")
+    @dp.message(F.text.lower().in_({"открыть файл", "open file"}))
     @dp.message(Command("open_file"))
     async def cmd_start(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer(
-                "Укажите путь и имя файла с его расширением, пример:\n C:/Users/Public/Название_файла.txt"
-            )
-            await state.set_state(Openfile.waiting_for_dfile)  # Переход в состояние ожидания пути файла
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
 
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['open_file_prompt'])
+            await state.set_state(Openfile.waiting_for_dfile)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(Openfile.waiting_for_dfile)
-    async def web_record_send(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            directoryopn = message.text
+    async def open_file(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+        file_path = message.text
 
-            # Проверка существования файла
-            if os.path.isfile(directoryopn):
-                try:
-                    # Запуск .exe или .bat файла на Windows
-                    os.system(f'start "" "{directoryopn}"')
-                    await message.answer("Файл был успешно открыт.")
-                except Exception as e:
-                    await message.answer(f"Произошла ошибка при открытии файла: {e}")
-            else:
-                await message.answer(f"Файл {directoryopn} не был найден. \nПожалуйста, проверьте правильность пути и имени файла, затем повторите попытку.")
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['no_access'])
+            return
 
-            await state.clear()  
-
+        if os.path.isfile(file_path):
+            try:
+                os.system(f'start "" "{file_path}"')
+                await message.answer(TEXTS[lang]['open_file_success'])
+            except Exception as e:
+                await message.answer(TEXTS[lang]['open_file_error'].format(error=e))
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
-    
+            await message.answer(TEXTS[lang]['open_file_not_found'].format(file_path=file_path))
+
+        await state.clear()

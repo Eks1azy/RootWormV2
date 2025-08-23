@@ -22,53 +22,51 @@ from aiogram.fsm.context import FSMContext
 from aiogram import types
 from config import ALLOWED_USER_ID
 from lib.states import waiting
+from lib.texts import TEXTS, user_languages
 
 import shutil
 import os
 
 def register_folder_delete(dp):
-    @dp.message(F.text.lower() == "удалить папку")
+    @dp.message(F.text.lower().in_({"удалить папку", "delete folder"}))
     @dp.message(Command("delete_folder"))
     async def delet_folder_command(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer(
-                "Укажите путь и вконце название папки, пример:\n C:/Users/Public/Название_папки\n!!!Папка удаляется со всем содержимым!!!")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['delete_folder_prompt'])
             await state.set_state(waiting.folder_name_delet)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
-
-    # Словарь для хранения количества некорректных вводов
+    # Incorrect attempts tracking
     incorrect_attempts = {}
+
     @dp.message(waiting.folder_name_delet)
     async def processdelet_folder_name(message: types.Message, state: FSMContext):
         user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
         folder_name_delet = message.text
 
-        # Инициализация счётчика некорректных вводов для пользователя
         if user_id not in incorrect_attempts:
             incorrect_attempts[user_id] = 0
 
-        if message.from_user.id == ALLOWED_USER_ID:
-            # Проверяем, существует ли папка
+        if user_id == ALLOWED_USER_ID:
             if os.path.exists(folder_name_delet) and os.path.isdir(folder_name_delet):
                 try:
                     shutil.rmtree(folder_name_delet)
-                    await message.answer(f"Папка '{folder_name_delet}' и все её содержимое успешно удалены.")
-                    # Завершаем состояние после успешного удаления
-                    await state.set_state(None)
-                    # Сбрасываем счётчик некорректных вводов
+                    await message.answer(TEXTS[lang]['folder_deleted'].format(folder_name=folder_name_delet))
+                    await state.clear()
                     incorrect_attempts[user_id] = 0
                 except Exception as e:
-                    await message.answer(f"Ошибка при удалении папки: {e}")
-                    # Завершаем состояние при критической ошибке
-                    await state.set_state(None)
+                    await message.answer(TEXTS[lang]['folder_delete_error'].format(error=e))
+                    await state.clear()
             else:
                 incorrect_attempts[user_id] += 1
                 if incorrect_attempts[user_id] >= 1:
-                    await message.answer(f"Папка '{folder_name_delet}' не найдена. Пожалуйста, введите корректный путь к папке")
-                    await message.answer("Попробуйте снова. Перезапустив процесс.")
+                    await message.answer(TEXTS[lang]['folder_not_found'].format(folder_name=folder_name_delet))
+                    await message.answer(TEXTS[lang]['try_again'])
                     await state.clear()
-
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])

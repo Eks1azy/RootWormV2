@@ -19,14 +19,18 @@ from aiogram import types, F
 from aiogram.filters import Command
 import pyautogui
 from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 
 def register_alt_f4_handlers(dp):
     @dp.message(F.text.lower() == "alt + f4")
     @dp.message(Command("alt_f4"))
     async def alt_f4(message: types.Message):
-        if message.from_user.id == ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
             pyautogui.hotkey("alt", "f4")
-            await message.answer("Окно было успешно закрыто ✅")
+            await message.answer(TEXTS[lang]['altf4_success'])
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])

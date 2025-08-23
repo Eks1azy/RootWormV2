@@ -20,58 +20,62 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import move_file
+from lib.texts import TEXTS, user_languages
 
 import shutil
 import os
 
 def register_move_file(dp):
-    @dp.message(F.text.lower() == "перемистить файл")
+    @dp.message(F.text.lower().in_({"перемистить файл", "move file"}))
     @dp.message(Command("move_file"))
     async def start_move_file(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer(
-                "Хорошо, введите путь файла, который хотите переместить (например, C:/Users/Public/Название_файла.txt):")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
+
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['move_file_prompt_source'])
             await state.set_state(move_file.waiting_path1)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['no_access'])
 
     @dp.message(move_file.waiting_path1)
     async def get_source_path(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
         source_path = message.text
 
-        # Проверка, существует ли исходный файл
         if not os.path.isfile(source_path):
-            await message.answer("Файл не найден. Пожалуйста, убедитесь, что путь к файлу указан правильно и перезапустите процесс.")
+            await message.answer(TEXTS[lang]['move_file_not_found'])
             await state.clear()
-            return  # Прерываем дальнейшее выполнение
+            return
 
         await state.update_data(source_path=source_path)
-        await message.answer("Теперь введите путь, куда нужно переместить файл (например, C:/Users/Public/Целевая_папка/):")
+        await message.answer(TEXTS[lang]['move_file_prompt_dest'])
         await state.set_state(move_file.waiting_path2)
 
     @dp.message(move_file.waiting_path2)
     async def get_destination_path(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'ru')
         destination_path = message.text
         data = await state.get_data()
         source_path = data.get("source_path")
 
-        # Проверка, существует ли директория назначения
         if not os.path.isdir(destination_path):
-            await message.answer("Целевая директория не найдена. Пожалуйста, убедитесь, что путь к директории указан правильно и перезапустите процесс.")
+            await message.answer(TEXTS[lang]['move_dir_not_found'])
             await state.clear()
-            return  # Прерываем дальнейшее выполнение
+            return
 
         try:
-            # Попытка перемещения файла
             shutil.move(source_path, destination_path)
-            await message.answer(f"Файл успешно перемещён в {destination_path}.")
+            await message.answer(TEXTS[lang]['move_file_success'].format(destination_path=destination_path))
         except FileNotFoundError:
-            await message.answer("Файл или директория не найдены. Проверьте путь.")
+            await message.answer(TEXTS[lang]['move_file_not_found'])
         except PermissionError:
-            await message.answer("Недостаточно прав для перемещения файла. Пожалуйста, проверьте права доступа.")
+            await message.answer(TEXTS[lang]['move_file_no_permission'])
         except OSError as e:
-            await message.answer(f"Ошибка доступа к файлу или директории: {e}")
+            await message.answer(TEXTS[lang]['move_file_os_error'].format(error=e))
         except Exception as e:
-            await message.answer(f"Произошла непредвиденная ошибка: {e}")
+            await message.answer(TEXTS[lang]['move_file_unknown_error'].format(error=e))
         finally:
             await state.clear()
