@@ -24,21 +24,29 @@ from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID, directory
 from config import bot
 from lib.states import fdesk
+from lib.texts import TEXTS, user_languages
 
 def register_wallpaper_handlers(dp):
     @dp.message(F.text.lower() == "поменять обои")
+    @dp.message(F.text.lower() == "change wallpaper")
     @dp.message(Command("change_wallpaper"))
-    async def wallpaper(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("Хорошо, отправьте фото.")
+    async def wallpaper_start(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['send_photo'])
             await state.set_state(fdesk.waiting_photo)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['access_denied'])
 
     @dp.message(fdesk.waiting_photo, F.content_type.in_([ContentType.PHOTO, ContentType.DOCUMENT]))
-    async def receiving_photo(message: types.Message, state: FSMContext):
-        if message.from_user.id != ALLOWED_USER_ID:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+    async def wallpaper_receive(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['access_denied'])
             return
 
         try:
@@ -55,6 +63,7 @@ def register_wallpaper_handlers(dp):
             file = await bot.download_file(file_path)
 
             save_path = os.path.join(directory, file_name)
+            os.makedirs(directory, exist_ok=True)
 
             with open(save_path, "wb") as f:
                 f.write(file.getvalue())
@@ -63,12 +72,12 @@ def register_wallpaper_handlers(dp):
             SPI_SETDESKWALLPAPER = 20
             ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, os.path.abspath(save_path), 3)
 
-            await message.reply("Обои успешно заменены.")
+            await message.reply(TEXTS[lang]['wallpaper_changed'])
 
             os.remove(save_path)
             await state.clear()
 
         except FileNotFoundError:
-            await message.reply("Ошибка: файл не найден.")
+            await message.reply(TEXTS[lang]['file_not_found'])
         except Exception as e:
-            await message.reply(f"Произошла ошибка: {e}")
+            await message.reply(TEXTS[lang]['error_occurred'].format(error=e))

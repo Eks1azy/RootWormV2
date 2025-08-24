@@ -21,6 +21,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import FSInputFile
 from config import ALLOWED_USER_ID, directory, bot
 from lib.states import url
+from lib.texts import TEXTS, user_languages
 
 import webbrowser
 import asyncio
@@ -29,49 +30,48 @@ import os
 
 def register_open_url(dp):
     @dp.message(F.text.lower() == "открыть ссылку")
+    @dp.message(F.text.lower() == "open url")
     @dp.message(Command("open_url"))
-    async def open_url(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
+    async def open_url_start(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
 
-            await message.answer("Ок, кидай ссылку.")
+        if user_id == ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['enter_url'])
             await state.set_state(url.waiting_url)
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['access_denied'])
 
     @dp.message(url.waiting_url)
-    async def open_url(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
+    async def open_url_process(message: types.Message, state: FSMContext):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
 
-            url = message.text
-            webbrowser.open(url)
-
+        if user_id == ALLOWED_USER_ID:
+            url_to_open = message.text
+            webbrowser.open(url_to_open)
 
             # Задержка в 5 секунд
             await asyncio.sleep(5)
-            await message.answer("Ссылка была успешно открыта:")
+            await message.answer(TEXTS[lang]['url_opened'])
+
             # Делаем скриншот всего экрана
             screenshot = pyautogui.screenshot()
             filename = "screenshot.png"
             filepath = os.path.join(directory, filename)
 
-            # Убедитесь, что директория существует, если нет, создайте её
+            # Создаем директорию, если её нет
             os.makedirs(directory, exist_ok=True)
-
-            # Сохраняем скриншот в указанную директорию
             screenshot.save(filepath)
 
-            # Создаем объект FSInputFile
+            # Отправка скриншота
             photo = FSInputFile(filepath)
-
-            # Отправляем фото с подписью
             await message.answer_photo(photo)
 
-            # Удаляем файл после отправки
+            # Удаление файла после отправки
             if os.path.exists(filepath):
                 os.remove(filepath)
 
-            async def main():
-                await dp.start_polling(bot)
             await state.clear()
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['access_denied'])

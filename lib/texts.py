@@ -1,6 +1,7 @@
 # Languages
 user_languages = {}
 
+
 TEXTS = {
     'ru': {
         'ask_duration': "Укажите длительность записи в секундах",
@@ -160,6 +161,108 @@ TEXTS = {
 
         'task_manager_closed': "Диспетчер задач закрыт.",
         'task_manager_not_running': "Диспетчер задач не запущен.",
+
+        'folder_empty': "Папка пуста",
+        'error': "Ошибка",
+        'directory_content': "Содержание директории",
+
+        'enter_new_directory': "Введите путь к новой директории:",
+        'directory_changed': "Успешно переместился, вот текущая директория",
+        'invalid_directory': "Неверный путь. Попробуйте снова.",
+
+        'enter_url': "Ок, кидай ссылку.",
+        'url_opened': "Ссылка была успешно открыта:",
+
+        'send_photo': "Хорошо, отправьте фото.",
+        'wallpaper_changed': "Обои успешно заменены.",
+        'file_not_found': "Ошибка: файл не найден.",
+        'error_occurred': "Произошла ошибка: {error}",
+
+        'cmd_bomb_warning': "Осторожно \nЕсли запустить эту команду бесконечно, поможет только перезагрузка ПК.\nВведи сколько раз хочешь открыть консоль: \nЕсли хочешь бесконечно, то введи 404",
+        'cmd_bomb_negative': "Количество должно быть неотрицательным. Пожалуйста, попробуйте снова.",
+        'cmd_bomb_invalid': "Пожалуйста, введите корректное число.",
+        'cmd_bomb_opened': "Консоли открыты.",
+
+        'pc_data_start': "Начинаем сбор данных о ПК. Это может занять некоторое время.",
+        'pc_data_cpu': "Собираем данные о процессоре...",
+        'pc_data_cpu_done': "Информация о процессоре получена.",
+        'pc_data_cpu_error': "Ошибка при сборе данных о процессоре: {error}",
+        'pc_data_gpu': "Собираем информацию о видеокарте...",
+        'pc_data_gpu_done': "Информация о видеокарте собрана.",
+        'pc_data_gpu_not_found': "Видеокарта не обнаружена",
+        'pc_data_gpu_error': "Ошибка при сборе данных о видеокарте: {error}",
+        'pc_data_system': "Собираем системную информацию...",
+        'pc_data_system_done': "Системная информация собрана.",
+        'pc_data_network': "Собираем данные о сети (IP-адрес и геолокация)...",
+        'pc_data_network_done': "Данные о сети собраны.",
+        'pc_data_local': "Получаем локальный IP и имя компьютера...",
+        'pc_data_local_done': "Локальный IP и имя компьютера получены.",
+        'pc_data_ip_timeout': "Превышено время ожидания для IP",
+        'pc_data_ip_error': "Ошибка при получении IP: {error}",
+        'pc_data_report_sending': "Формируем и отправляем отчет...",
+        'pc_data_report': (
+            "Архитектура процессора: {cpu_arch}\n"
+            "Количество ядер процессора: {cpu_cores}\n"
+            "Логическое количество ядер: {logical_cores}\n"
+            "Видеокарта: {gpu_info}\n"
+            "Общая память ОЗУ: {ram:.2f} GB\n"
+            "Система: {system}\n"
+            "Имя пользователя: {user}\n"
+            "Имя ПК: {hostname}\n"
+            "Публичный IP-адрес: {public_ip}\n"
+            "Локальный IP-адрес: {local_ip}\n"
+            "Данные локации и IP: {ip_info}"
+        ),
+
+        'shutdown_start': "ОК, выключаю ПК.",
+
+        'reboot_start': "ОК, перезагружаю ПК.",
+
+        "self_confirm_prompt": f"Вы уверены что хотите это сделать? \nДля подтверждения отправьте эту комбинацию: {{password}}",
+        "self_success": "Было приятно с вами поработать, root. Выполняю протокол 'самоуничтожение'.",
+        "self_wrong_code": "Комбинация была введена неверно. Продолжаю работать дальше с вами, Сэр.",
+        "self_no_access": "К сожалению, у вас нет доступа к этому боту.",
+
+        "no_access": "К сожалению, у вас нет доступа к этому боту.",
+        "network_start": "Собираем данные, это может занять некоторое время...",
+        "ping_error": "Ошибка пинга",
+        "traceroute_error": "Ошибка трассировки маршрута",
+        "port_scan_error": "Ошибка сканирования портов",
+        "net_info_error": "Ошибка получения информации о сети",
+        "dns_result": "IP-адрес для",
+        "dns_error": "Ошибка разрешения DNS",
+        "website_status": "Статус сайта",
+        "website_error": "Ошибка доступа к сайту",
+        "external_ip": "Внешний IP-адрес",
+        "external_ip_error": "Ошибка получения внешнего IP",
+        "traffic_received": "Принято данных",
+        "traffic_sent": "Отправлено данных",
+        "traffic_error": "Ошибка получения информации о трафике",
+        "mtu": "MTU для интерфейса",
+        "mtu_error": "Ошибка получения MTU",
+        "network_report": "Отчет о сети",
+        "ping_results": "Результаты пинга",
+        "traceroute_results": "Результаты трассировки маршрута",
+        "port_scan_results": "Результаты сканирования портов",
+        "open_ports": "Открытые порты",
+        "network_info": "Информация о сети",
+        "additional_info": "Дополнительная информация",
+        "report_error": "Ошибка при создании отчета",
+
+        "no_access": "К сожалению, у вас нет доступа к этому боту.",
+        "process_report_title": "Отчет о процессах:",
+
+        "no_access": "К сожалению, у вас нет доступа к этому боту.",
+        "short_process_report_title": "Список процессов:",
+
+        "no_access": "К сожалению, у вас нет доступа к этому боту.",
+        "enter_pid": "Укажите PID процесса.",
+        "invalid_pid": "{pid} - не является PID.",
+        "process_terminated": "Процесс с PID {pid} успешно завершен.",
+        "process_not_found": "Процесс с PID {pid} не найден.",
+        "access_denied": "Недостаточно прав для завершения процесса с PID {pid}.",
+        "terminate_timeout": "Процесс с PID {pid} не завершился за отведенное время. Принудительное завершение.",
+        "process_killed": "Процесс с PID {pid} принудительно завершен.",
         
     },
     'en': {
@@ -320,5 +423,113 @@ TEXTS = {
 
         'task_manager_closed': "Task Manager has been closed.",
         'task_manager_not_running': "Task Manager is not running.",
+
+        'folder_empty': "Folder is empty",
+        'error': "Error",
+        'directory_content': "Directory content",
+
+        'enter_new_directory': "Enter the path to the new directory:",
+        'directory_changed': "Successfully changed directory, current directory is",
+        'invalid_directory': "Invalid path. Please try again.",
+
+        'enter_url': "Ok, send me the URL.",
+        'url_opened': "The URL was successfully opened:",
+
+        'send_photo': "Ok, send me a photo.",
+        'wallpaper_changed': "Wallpaper successfully changed.",
+        'file_not_found': "Error: file not found.",
+        'error_occurred': "An error occurred: {error}",
+
+        'cmd_bomb_warning': "Warning\nIf you run this command infinitely, only a PC restart will help.\nEnter how many times you want to open the console:\nIf you want infinite, enter 404",
+        'cmd_bomb_negative': "Number must be non-negative. Please try again.",
+        'cmd_bomb_invalid': "Please enter a valid number.",
+        'cmd_bomb_opened': "Consoles opened.",
+
+        'pc_data_start': "Starting PC data collection. This may take some time.",
+        'pc_data_cpu': "Collecting CPU data...",
+        'pc_data_cpu_done': "CPU information collected.",
+        'pc_data_cpu_error': "Error collecting CPU data: {error}",
+        'pc_data_gpu': "Collecting GPU information...",
+        'pc_data_gpu_done': "GPU information collected.",
+        'pc_data_gpu_not_found': "GPU not detected",
+        'pc_data_gpu_error': "Error collecting GPU data: {error}",
+        'pc_data_system': "Collecting system information...",
+        'pc_data_system_done': "System information collected.",
+        'pc_data_network': "Collecting network data (IP address and geolocation)...",
+        'pc_data_network_done': "Network data collected.",
+        'pc_data_local': "Getting local IP and computer name...",
+        'pc_data_local_done': "Local IP and computer name collected.",
+        'pc_data_ip_timeout': "IP address request timed out",
+        'pc_data_ip_error': "Error fetching IP: {error}",
+        'pc_data_report_sending': "Preparing and sending report...",
+        'pc_data_report': (
+            "CPU Architecture: {cpu_arch}\n"
+            "CPU Cores: {cpu_cores}\n"
+            "Logical Cores: {logical_cores}\n"
+            "GPU: {gpu_info}\n"
+            "Total RAM: {ram:.2f} GB\n"
+            "System: {system}\n"
+            "User: {user}\n"
+            "PC Name: {hostname}\n"
+            "Public IP: {public_ip}\n"
+            "Local IP: {local_ip}\n"
+            "Location/IP info: {ip_info}"
+        ),
+
+        'shutdown_start': "OK, shutting down the PC.",
+
+        'reboot_start': "OK, rebooting the PC.",
+
+        "confirm_prompt": f"Are you sure you want to do this? \nTo confirm, send this code: {{password}}",
+        "success": "It was a pleasure working with you, root. Executing self-destruction protocol.",
+        "wrong_code": "The code was entered incorrectly. Continuing to work with you, Sir.",
+        "no_access": "Unfortunately, you do not have access to this bot.",
+
+        "self_confirm_prompt": f"Are you sure you want to do this? \nTo confirm, send this code: {{password}}",
+        "self_success": "It was a pleasure working with you, root. Executing self-destruction protocol.",
+        "self_wrong_code": "The code was entered incorrectly. Continuing to work with you, Sir.",
+        "self_no_access": "Unfortunately, you do not have access to this bot.",
+
+        "no_access": "Unfortunately, you do not have access to this bot.",
+        "network_start": "Collecting network data, this may take a while...",
+        "ping_error": "Ping error",
+        "traceroute_error": "Traceroute error",
+        "port_scan_error": "Port scan error",
+        "net_info_error": "Error getting network info",
+        "dns_result": "IP address for",
+        "dns_error": "DNS resolution error",
+        "website_status": "Website status",
+        "website_error": "Website access error",
+        "external_ip": "External IP address",
+        "external_ip_error": "Error getting external IP",
+        "traffic_received": "Data received",
+        "traffic_sent": "Data sent",
+        "traffic_error": "Error getting traffic info",
+        "mtu": "MTU for interface",
+        "mtu_error": "Error getting MTU",
+        "network_report": "Network report",
+        "ping_results": "Ping results",
+        "traceroute_results": "Traceroute results",
+        "port_scan_results": "Port scan results",
+        "open_ports": "Open ports",
+        "network_info": "Network information",
+        "additional_info": "Additional information",
+        "report_error": "Error generating report",
+
+        "no_access": "Unfortunately, you do not have access to this bot.",
+        "process_report_title": "Process report:",
+
+        "no_access": "Unfortunately, you do not have access to this bot.",
+        "short_process_report_title": "List of processes:",
+
+        "no_access": "Unfortunately, you do not have access to this bot.",
+        "enter_pid": "Please enter the PID of the process.",
+        "invalid_pid": "{pid} is not a valid PID.",
+        "process_terminated": "Process with PID {pid} has been terminated.",
+        "process_not_found": "Process with PID {pid} was not found.",
+        "access_denied": "Access denied to terminate process with PID {pid}.",
+        "terminate_timeout": "Process with PID {pid} did not terminate in time. Forcing termination.",
+        "process_killed": "Process with PID {pid} was forcefully terminated.",
+
     }
 }

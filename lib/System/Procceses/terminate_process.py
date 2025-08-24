@@ -22,46 +22,54 @@ from aiogram import types, F
 import psutil
 from lib.states import Form
 from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 
 def register_terminate_process_handlers(dp):
     @dp.message(F.text.lower() == "завершить процесс")
+    @dp.message(F.text.lower() == "terminate process")
     @dp.message(Command("terminate_process"))
     async def cmd_andprocesses(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("Укажите PID процесса.")
-            await state.set_state(ProcessState.waiting_for_pid)  # Устанавливаем состояние ожидания PID
-        else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+        lang = user_languages.get(message.from_user.id, 'ru')
+        t = TEXTS[lang]
 
-    # Обработчик для получения PID от пользователя
+        if message.from_user.id != ALLOWED_USER_ID:
+            await message.answer(t["no_access"])
+            return
+
+        await message.answer(t["enter_pid"])
+        await state.set_state(ProcessState.waiting_for_pid)
+
     @dp.message(ProcessState.waiting_for_pid)
     async def process_pid(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
-            user_input = message.text
+        lang = user_languages.get(message.from_user.id, 'ru')
+        t = TEXTS[lang]
 
-            # Проверка, является ли введенное значение числом
-            if not user_input.isdigit():
-                await message.answer(f"{user_input} - Не является PID.")
-                await state.clear()  # Завершаем состояние
-                return
+        if message.from_user.id != ALLOWED_USER_ID:
+            await message.answer(t["no_access"])
+            return
 
-            pid = int(user_input)  # Преобразуем строку в числоw
+        user_input = message.text
 
-            try:
-                process = psutil.Process(pid)
-                process.terminate()  # Попробовать мягко завершить процесс
-                process.wait(timeout=3)  # Подождать завершения процесса
-                await message.answer(f"Процесс с PID {pid} успешно завершен.")
-            except psutil.NoSuchProcess:
-                await message.answer(f"Процесс с PID {pid} не найден.")
-            except psutil.AccessDenied:
-                await message.answer(f"Недостаточно прав для завершения процесса с PID {pid}.")
-            except psutil.TimeoutExpired:
-                await message.answer(f"Процесс с PID {pid} не завершился за отведенное время. Принудительное завершение.")
-                process.kill()  # Принудительное завершение процесса
-                await message.answer(f"Процесс с PID {pid} принудительно завершен.")
-            # Завершаем состояние после успешной обработки
+        if not user_input.isdigit():
+            await message.answer(t["invalid_pid"].format(pid=user_input))
             await state.clear()
-        else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            return
+
+        pid = int(user_input)
+
+        try:
+            process = psutil.Process(pid)
+            process.terminate()
+            process.wait(timeout=3)
+            await message.answer(t["process_terminated"].format(pid=pid))
+        except psutil.NoSuchProcess:
+            await message.answer(t["process_not_found"].format(pid=pid))
+        except psutil.AccessDenied:
+            await message.answer(t["access_denied"].format(pid=pid))
+        except psutil.TimeoutExpired:
+            await message.answer(t["terminate_timeout"].format(pid=pid))
+            process.kill()
+            await message.answer(t["process_killed"].format(pid=pid))
+
+        await state.clear()

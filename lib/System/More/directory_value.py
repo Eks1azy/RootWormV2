@@ -19,14 +19,19 @@ from aiogram import types, F
 from aiogram.filters import Command
 from config import ALLOWED_USER_ID
 from lib.states import current_directory
+from lib.texts import TEXTS, user_languages
 
 import os
 
 def register_directory_value(dp):
     @dp.message(F.text == "Содержание директории")
+    @dp.message(F.text == "Directory content")
     @dp.message(Command("show_directory_content"))
     async def show_directory_content(message: types.Message):
-        if message.from_user.id == ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id == ALLOWED_USER_ID:
             global current_directory
             try:
                 files_and_dirs = os.listdir(current_directory)
@@ -38,13 +43,10 @@ def register_directory_value(dp):
                         content.append(f"{item}  -  {size / (1024 * 1024):.2f} MB")
                     else:
                         content.append(f"{item}")
-                if content:
-                    content_text = "\n".join(content)
-                else:
-                    content_text = "Папка пуста"
+                content_text = "\n".join(content) if content else TEXTS[lang]['folder_empty']
             except Exception as e:
-                content_text = f"Ошибка: {str(e)}"
+                content_text = f"{TEXTS[lang]['error']}: {str(e)}"
 
-            await message.answer(f"Содержание директории '{current_directory}':`\n{content_text}`",parse_mode='MarkdownV2')
+            await message.answer(f"{TEXTS[lang]['directory_content']} '{current_directory}':`\n{content_text}`", parse_mode='MarkdownV2')
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['access_denied'])
