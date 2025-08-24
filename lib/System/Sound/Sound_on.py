@@ -40,7 +40,6 @@ def register_sound_handlers(dp):
         if message.from_user.id != ALLOWED_USER_ID:
             await message.answer(TEXTS[lang]['no_access'])
             return
-
         try:
             set_mute(1)
             await message.answer(TEXTS[lang]['volune muted'])
