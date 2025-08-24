@@ -20,30 +20,38 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from config import ALLOWED_USER_ID
 from lib.states import DirectoryState, current_directory
+from lib.texts import TEXTS, user_languages
 
 import os
 
 def register_cd(dp):
     @dp.message(F.text == "Переместиться по директории")
+    @dp.message(F.text == "Change directory")
     @dp.message(Command("change_directory"))
     async def change_directory(message: types.Message, state: FSMContext):
-        await message.answer("Введите путь к новой директории:")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        await message.answer(TEXTS[lang]['enter_new_directory'])
         await state.set_state(DirectoryState.waiting_for_directory)
 
     # Обработчик для ввода новой директории
     @dp.message(DirectoryState.waiting_for_directory)
     async def set_new_directory(message: types.Message, state: FSMContext):
-        if message.from_user.id == ALLOWED_USER_ID:
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id == ALLOWED_USER_ID:
             global current_directory
             new_directory = message.text
 
             if os.path.isdir(new_directory):
                 current_directory = new_directory
-                await message.answer(f"Успешно переместился, вот текущая директория:\n{current_directory}")
+                await message.answer(f"{TEXTS[lang]['directory_changed']}:\n{current_directory}")
             else:
-                await message.answer("Неверный путь. Попробуйте снов.")
+                await message.answer(TEXTS[lang]['invalid_directory'])
 
             await state.clear()
         else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+            await message.answer(TEXTS[lang]['access_denied'])
     tasks = {}

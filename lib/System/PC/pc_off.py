@@ -19,14 +19,19 @@ import os
 from aiogram import types, F
 from aiogram.filters import Command
 from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 
 def register_shutdown_handlers(dp):
-    @dp.message(F.text.lower() == "выключить пк")
+    @dp.message(lambda message: message.text and message.text.lower() in ["выключить пк", "shutdown pc"])
     @dp.message(Command("shutdown_pc"))
     async def shutdown_pc(message: types.Message):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("ОК, выключаю ПК.")
-            os.system("shutdown /s /t 1")
-        else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['access_denied'])
+            return
+
+        await message.answer(TEXTS[lang]['shutdown_start'])
+        os.system("shutdown /s /t 1")

@@ -17,14 +17,20 @@
 
 import os
 from aiogram.filters import Command
+from aiogram import types
 from config import ALLOWED_USER_ID
+from lib.texts import TEXTS, user_languages
 
 def register_reboot_handlers(dp):
-    @dp.message(lambda message: message.text and message.text.lower() == "перезагрузить пк")
+    @dp.message(lambda message: message.text and message.text.lower() in ["перезагрузить пк", "reboot pc"])
     @dp.message(Command("restart_pc"))
-    async def start_decipher(message):
-        if message.from_user.id == ALLOWED_USER_ID:
-            await message.answer("ОК,перезагружаю ПК.")
-            os.system('shutdown /r /t 1')
-        else:
-            await message.answer("К сожалению, у вас нет доступа к этому боту.")
+    async def restart_pc(message: types.Message):
+        user_id = message.from_user.id
+        lang = user_languages.get(user_id, 'en')
+
+        if user_id != ALLOWED_USER_ID:
+            await message.answer(TEXTS[lang]['access_denied'])
+            return
+
+        await message.answer(TEXTS[lang]['reboot_start'])
+        os.system('shutdown /r /t 1')
