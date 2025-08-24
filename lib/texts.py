@@ -266,6 +266,7 @@ TEXTS = {
         'volune muted': "Звук отключен.",
         'volume_set_100': "Громкость была установлена на 100%"
         
+        
     },
     'en': {
         'ask_duration': "Enter recording duration in seconds",
