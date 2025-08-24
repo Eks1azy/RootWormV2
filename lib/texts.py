@@ -160,6 +160,30 @@ TEXTS = {
 
         'task_manager_closed': "Диспетчер задач закрыт.",
         'task_manager_not_running': "Диспетчер задач не запущен.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        'volume_unmuted': "Звук включен.",
+        'volune muted': "Звук отключен.",
+        'volume_set_100': "Громкость была установлена на 100%"
         
     },
     'en': {
@@ -320,5 +344,26 @@ TEXTS = {
 
         'task_manager_closed': "Task Manager has been closed.",
         'task_manager_not_running': "Task Manager is not running.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        'volume_unmuted': "Sound is unmuted.",
+        'volune muted': "Sound is muted.",
+        'volume_set_100': "Volume has been set to 100%"
     }
 }
