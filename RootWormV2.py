@@ -212,7 +212,7 @@ def RootWorm3():
     exe = input(f"{let}root@RootWormV2{clear}:{ler}~{clear}$ ")
 
     print(f"""
-    {ler}>>{clear} Enter the icon file path (.ico): 
+    {ler}>>{clear} Enter the icon file path (any format): 
     """)   
     
     icon = input(f"{let}root@RootWormV2{clear}:{ler}~{clear}$ ")

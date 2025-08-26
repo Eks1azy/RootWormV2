@@ -27,14 +27,14 @@ from aiogram import F
 
 ########### COMMIT WHEN YOU WILL BUILD EXE ###########
 
-## Отключение вывода на экран
-sys.stdout = open(os.devnull, 'w')  
-sys.stderr = open(os.devnull, 'w')  
-logging.basicConfig(level=logging.CRITICAL + 1)
-logging.getLogger('aiogram').disabled = True
+# ## Отключение вывода на экран
+# sys.stdout = open(os.devnull, 'w')  
+# sys.stderr = open(os.devnull, 'w')  
+# logging.basicConfig(level=logging.CRITICAL + 1)
+# logging.getLogger('aiogram').disabled = True
 
-## Включаем логирование, чтобы не пропустить важные сообщения
-logging.basicConfig(level=logging.INFO)
+# ## Включаем логирование, чтобы не пропустить важные сообщения
+# logging.basicConfig(level=logging.INFO)
 
 ############################ START MENU COMMANDS ###########################
 
