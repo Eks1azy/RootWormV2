@@ -16,12 +16,13 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-
-from config import ALLOWED_USER_ID, directory
 from aiogram.types import FSInputFile
 import wave
 import pyaudio
 import os
+
+
+from config import ALLOWED_USER_ID, directory
 from lib.text.texts import TEXTS, user_languages
 
 
@@ -30,7 +31,7 @@ async def start_audio_recording(message, state, recording_time: int):
     lang = user_languages.get(user_id, 'en') 
 
     if user_id != ALLOWED_USER_ID:
-        await message.answer(TEXTS[lang].get("access_denied", "You do not have access to this bot."))
+        await message.answer(TEXTS[lang]['access_denied'])
         return
 
     FORMAT = pyaudio.paInt16
@@ -43,14 +44,14 @@ async def start_audio_recording(message, state, recording_time: int):
     audio = pyaudio.PyAudio()
     stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
-    await message.answer(TEXTS[lang].get("recording_started", "Recording started..."))
+    await message.answer(TEXTS[lang]['recording_started'])
 
     frames = []
     for _ in range(0, int(RATE / CHUNK * recording_time)):
         data = stream.read(CHUNK)
         frames.append(data)
 
-    await message.answer(TEXTS[lang].get("recording_finished", "Recording finished."))
+    await message.answer(TEXTS[lang]['recording_finished'])
 
     stream.stop_stream()
     stream.close()
@@ -65,8 +66,8 @@ async def start_audio_recording(message, state, recording_time: int):
 
     try:
         file_to_send = FSInputFile(save_audio)
-        await message.answer_document(document=file_to_send, caption=TEXTS[lang].get("audio_ready", "Here is the audio recording, root!"))
+        await message.answer_document(document=file_to_send, caption=TEXTS[lang]['audio_ready'])
         os.remove(save_audio)
         await state.clear()
     except Exception as e:
-        await message.answer(TEXTS[lang].get("file_send_error", f"Error sending file: {e}"))
+        await message.answer(TEXTS[lang][f'file_send_error'])

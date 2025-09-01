@@ -16,14 +16,14 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-
 from aiogram import types, F
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.filters import Command
 import wmi
-from lib.text.texts import TEXTS, user_languages
 
+from lib.text.texts import TEXTS, user_languages
 from config import ALLOWED_USER_ID 
+
 
 def register_antivirus_handlers(dp):
 
@@ -46,7 +46,6 @@ def register_antivirus_handlers(dp):
         user_id = message.from_user.id
         text = message.text.casefold()
 
-        # Определяем язык по команде
         if text == "антивирус":
             lang = 'ru'
         else:

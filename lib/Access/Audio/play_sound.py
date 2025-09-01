@@ -16,39 +16,31 @@
 ##  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_/
 
 
-
 from lib.states import SoundStates
 from aiogram import types, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from playsound import playsound
-from lib.text.texts import TEXTS, user_languages
-
+ 
 import os
 import threading
 
+from lib.text.texts import TEXTS, user_languages
 from config import ALLOWED_USER_ID
+
 
 def register_play_sound_handlers(dp):
     @dp.message((F.text.lower() == "воспроизвести звук") | (F.text.lower() == "play sound"))
     @dp.message(Command("play_sound"))
     async def start_getting_path(message: types.Message, state: FSMContext):
         user_id = message.from_user.id
-
-        # Определяем язык по кнопке или из user_languages
-        if message.text.lower() == "воспроизвести звук":
-            lang = 'ru'
-        else:
-            lang = user_languages.get(user_id, 'en')
+        lang = user_languages.get(user_id, 'en')
 
         if user_id != ALLOWED_USER_ID:
-            await message.answer(TEXTS[lang].get("access_denied", "You do not have access to this command."))
+            await message.answer(TEXTS[lang]['no_access'])
             return
 
-        await message.answer(TEXTS[lang].get(
-            "enter_mp3_path",
-            "Enter the full path to the MP3 file (e.g., `/home/user/music/mysound.mp3`):"
-        ))
+        await message.answer(TEXTS[lang]['enter_mp3_path'])
         await state.set_state(SoundStates.waiting_for_file_path)
 
     @dp.message(SoundStates.waiting_for_file_path)
@@ -63,17 +55,14 @@ def register_play_sound_handlers(dp):
         file_path = message.text.strip()
 
         if not os.path.isfile(file_path) or not file_path.lower().endswith(".mp3"):
-            await message.answer(TEXTS[lang].get(
-                "invalid_mp3",
-                "The file does not exist or is not an MP3. Try again with the command."
-            ))
+            await message.answer(TEXTS[lang]['invalid_mp3'])
             await state.clear()
             return
 
         try:
             threading.Thread(target=playsound, args=(file_path,), daemon=True).start()
-            await message.answer(TEXTS[lang].get("playing_sound", "The sound is playing, root!"))
+            await message.answer(TEXTS[lang]['playing_sound'])
         except Exception as e:
-            await message.answer(TEXTS[lang].get("play_error", f"Error playing file: {e}"))
+            await message.answer(TEXTS[lang][f'play_error'])
 
         await state.clear()

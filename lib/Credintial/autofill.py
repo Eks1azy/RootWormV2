@@ -22,12 +22,14 @@
 
 from aiogram import  types, F
 from aiogram.filters import Command
-from config import ALLOWED_USER_ID
 
 import tempfile
 import os
 import shutil 
 import sqlite3
+
+
+from config import ALLOWED_USER_ID
 from lib.text.texts import TEXTS, user_languages
 
 
@@ -45,7 +47,7 @@ def register_autofill_handler(dp):
     @dp.message(Command("autofill"))
     async def autofill(message: types.Message):
         user_id = message.from_user.id
-        lang = user_languages.get(user_id, 'ru')
+        lang = user_languages.get(user_id, 'en')
 
         if message.from_user.id == ALLOWED_USER_ID:
             res = []
